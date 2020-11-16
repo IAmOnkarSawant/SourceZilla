@@ -1,0 +1,51 @@
+.explore {
+  width: 100%;
+  height: calc(100vh - 64px );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid__container {
+  display: grid;
+  grid-template-columns: repeat(8, 50px);
+  grid-template-rows: repeat(2, 50px);
+  grid-gap: 8px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.grid__container > div.grid-item {
+  background-color: #fdd835;
+  color: black;
+  font-size: 1.92938em;
+  font-weight: 800;
+  box-shadow: 0 0.15rem 0 #ff8f00;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease-in-out;
+}
+
+.grid__container:hover div.grid-item:nth-child(1) {
+  transform: translate3d(10rem, 12rem, 0) rotate(-15deg);
+}
+.grid__container:hover div.grid-item:nth-child(2) {
+  transform: translate3d(-13.2rem, 1rem, 0) rotate(7deg);
+}
+.grid__container:hover div.grid-item:nth-child(3) {
+  transform: translate3d(-12rem, 5rem, 0) rotate(7deg);
+}
+.grid__container:hover div.grid-item:nth-child(4) {
+  transform: translate3d(11rem, 3rem, 0) rotate(-17deg);
+}
+.grid__container:hover div.grid-item:nth-child(5) {
+  transform: translate3d(19rem, 4rem, 0) rotate(11deg);
+}
+.grid__container:hover div.grid-item:nth-child(6) {
+  transform: translate3d(-20rem, 13rem, 0) rotate(15deg);
+}
+.grid__container:hover div.grid-item:nth-child(7) {
+  transform: translate3d(23rem, -6rem, 0) rotate(17deg);
+}
