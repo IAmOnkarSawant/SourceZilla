@@ -48,52 +48,44 @@ function Categories(props) {
                     <div className="categories">
                         <div className="grid__container_for_categories">
                             {props.categories.map((category, index) =>
-                                props.loading === true ? (
-                                    <SkeletonTheme color="#161f27" highlightColor="#324759">
-                                        <section>
-                                            <Skeleton reactangle={true} height={330} width={300} />
-                                        </section>
-                                    </SkeletonTheme>
-                                ) : (
-                                        category.spamFlag === false &&
-                                        <div key={index} className="content" >
-                                            <div className="overlay">
-                                                <Link to={`/category/${category._id}/`}>
-                                                    <button className="Stylishbtn style">{category.categoryName}</button>
-                                                </Link>
-                                                <div className="followers_length">
-                                                    <PeopleAltOutlinedIcon className="people_icon" />
-                                                    {category.followers.length}
-                                                </div>
-                                            </div>
-                                            <div className="category_card_follow_unfollow_buttons">
-                                                {
-                                                    category.followers.includes(props.auth.user.userId) ? (
-                                                        <Button className="follow_btn" fullWidth onClick={() => Unfollow(category._id)} style={{ marginTop: '10px' }} size="small" variant="contained" color="secondary" >
-                                                            UnFollow
-                                                        </Button>
-                                                    ) : (
-                                                            <Button className="Unfollow_btn" fullWidth onClick={() => follow(category._id)} style={{ marginTop: '10px' }} size="small" variant="contained" color="primary" >
-                                                                Follow
-                                                            </Button>
-                                                        )
-                                                }
-                                            </div>
-                                            <div className="category_card_report_button">
-                                                {
-                                                    category.reports.includes(props.auth.user.userId) ? (
-                                                        <IconButton style={{ color: '#0FAB4A' }} onClick={() => handleReportCategory(category._id)} size="medium" variant="contained" color="default" >
-                                                            <FlagIcon />
-                                                        </IconButton>
-                                                    ) : (
-                                                            <IconButton style={{ color: '#0FAB4A' }} onClick={() => handleReportCategory(category._id)} size="medium" variant="contained" color="default" >
-                                                                <FlagOutlinedIcon />
-                                                            </IconButton>
-                                                        )
-                                                }
-                                            </div>
+                                category.spamFlag === false &&
+                                <div key={index} className="content" >
+                                    <div className="overlay">
+                                        <Link to={`/category/${category._id}/`}>
+                                            <button className="Stylishbtn style">{category.categoryName}</button>
+                                        </Link>
+                                        <div className="followers_length">
+                                            <PeopleAltOutlinedIcon className="people_icon" />
+                                            {category.followers.length}
                                         </div>
-                                    )
+                                    </div>
+                                    <div className="category_card_follow_unfollow_buttons">
+                                        {
+                                            category.followers.includes(props.auth.user.userId) ? (
+                                                <Button className="follow_btn" fullWidth onClick={() => Unfollow(category._id)} style={{ marginTop: '10px' }} size="small" variant="contained" color="secondary" >
+                                                    UnFollow
+                                                </Button>
+                                            ) : (
+                                                    <Button className="Unfollow_btn" fullWidth onClick={() => follow(category._id)} style={{ marginTop: '10px' }} size="small" variant="contained" color="primary" >
+                                                        Follow
+                                                    </Button>
+                                                )
+                                        }
+                                    </div>
+                                    <div className="category_card_report_button">
+                                        {
+                                            category.reports.includes(props.auth.user.userId) ? (
+                                                <IconButton style={{ color: '#0FAB4A' }} onClick={() => handleReportCategory(category._id)} size="medium" variant="contained" color="default" >
+                                                    <FlagIcon />
+                                                </IconButton>
+                                            ) : (
+                                                    <IconButton style={{ color: '#0FAB4A' }} onClick={() => handleReportCategory(category._id)} size="medium" variant="contained" color="default" >
+                                                        <FlagOutlinedIcon />
+                                                    </IconButton>
+                                                )
+                                        }
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
