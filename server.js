@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 const path = require('path')
 const morgan = require('morgan')
 const compression = require('compression')
+const helmet = require('helmet')
 const DYNO_URL = 'https://dbms-mern-stack-app.herokuapp.com/'
 const wokeUp = require('./wake-up-dyno')
+
 
 // const HttpError = require('./models/http-error');
 
@@ -21,6 +23,8 @@ const { deleteFile, upload } = require('./models/db');
 
 // Init
 const app = express();
+
+app.use(helmet())
 
 app.use(compression());
 
