@@ -91,3 +91,16 @@
   color: #fff;
   text-decoration: none;
 }
+
+
+.imp_private-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: center !important;
+  padding: 15px 0 0 0;
+}
+.imp_private-info p{
+  color: rgb(82, 82, 82);
+  font-weight: 600;
+  font-size: 40px;
+}

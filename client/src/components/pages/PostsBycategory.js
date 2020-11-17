@@ -41,6 +41,7 @@ import nl2br from 'nl2br'
 import ScrollToTop from 'react-scroll-up'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import Loader from '../Loader';
+import { Toggle } from "react-toggle-component"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -68,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
 function PostsBycategory(props) {
     const classes = useStyles();
     // console.log(props.match.params.categoryId)
+    const [toggle, setToggle] = useState(false)
     const [postContent, setpostContent] = useState('')
     const [file, setFile] = useState('')
 
@@ -140,54 +142,70 @@ function PostsBycategory(props) {
             <Loader />
         )
     }
-
+    console.log(toggle)
     return (
         <Layout>
             <Container maxWidth="lg" >
-                <div className="create__post__">
-                    <form onSubmit={handleSubmit} className="post_create_content" >
-                        <textarea
-                            type="text"
-                            className="styled__textarea"
-                            name="postContent"
-                            value={postContent}
-                            onChange={(e) => setpostContent(e.target.value)}
+                <div className="imp_information">
+                    <p>
+                        {props.match.params.categoryName}
+                    </p>
+                    <div htmlFor="toggle-1">
+                        <Toggle
+                            name="toggle-1"
+                            rightBackgroundColor="#04A54B"
+                            leftKnobColor="grey"
+                            rightKnobColor="white"
+                            onToggle={() => setToggle((state) => !state)}
                         />
-                        <input
-                            className={classes.input}
-                            id="contained-button-file"
-                            type="file"
-                            name="file"
-                            onChange={(e) => setFile(e.target.files[0])}
-                        />
-                        <div className="buttons_post">
-                            <label htmlFor="contained-button-file" className="only_upload_button" >
-                                <Button fullWidth className="upload_button" size="small" variant="contained" component="span">
-                                    <AttachmentIcon style={{ marginRight: '8px' }} /> <span style={{ fontWeight: '700' }} >Upload</span>
-                                </Button>
-                            </label>
-                            <Button className={postContent ? 'post_submit_button' : 'disabled_post_submit_button'} disabled={!postContent} size="small" variant="contained" type="submit" >
-                                <CreateIcon style={{ marginRight: '8px' }} />  <span style={{ fontWeight: '700' }}>Create Post</span>
-                            </Button>
-                        </div>
-                        <Progress
-                            style={{ marginTop: '15px' }}
-                            percent={props.percentage}
-                            theme={{
-                                active: {
-                                    color: '#04A34A'
-                                },
-                                success: {
-                                    symbol: '✅',
-                                    color: '#04A34A'
-                                },
-                                default: {
-                                    symbol: '❌',
-                                }
-                            }}
-                        />
-                    </form>
+                    </div>
                 </div>
+                {toggle && (
+                    <div className="create__post__">
+                        <form onSubmit={handleSubmit} className="post_create_content" >
+                            <textarea
+                                type="text"
+                                className="styled__textarea"
+                                name="postContent"
+                                value={postContent}
+                                onChange={(e) => setpostContent(e.target.value)}
+                            />
+                            <input
+                                className={classes.input}
+                                id="contained-button-file"
+                                type="file"
+                                name="file"
+                                onChange={(e) => setFile(e.target.files[0])}
+                            />
+                            <div className="buttons_post">
+                                <label htmlFor="contained-button-file" className="only_upload_button" >
+                                    <Button fullWidth className="upload_button" size="small" variant="contained" component="span">
+                                        <AttachmentIcon style={{ marginRight: '8px' }} /> <span style={{ fontWeight: '700' }} >Upload</span>
+                                    </Button>
+                                </label>
+                                <Button className={postContent ? 'post_submit_button' : 'disabled_post_submit_button'} disabled={!postContent} size="small" variant="contained" type="submit" >
+                                    <CreateIcon style={{ marginRight: '8px' }} />  <span style={{ fontWeight: '700' }}>Create Post</span>
+                                </Button>
+                            </div>
+                            <Progress
+                                style={{ marginTop: '15px' }}
+                                percent={props.percentage}
+                                theme={{
+                                    active: {
+                                        color: '#04A34A'
+                                    },
+                                    success: {
+                                        symbol: '✅',
+                                        color: '#04A34A'
+                                    },
+                                    default: {
+                                        symbol: '❌',
+                                    }
+                                }}
+                            />
+                        </form>
+                    </div>
+                )}
                 <div className="posts_div">
                     <FlipMove
                         enterAnimation={{

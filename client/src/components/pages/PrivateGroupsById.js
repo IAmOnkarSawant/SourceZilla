@@ -40,6 +40,7 @@ import nl2br from 'nl2br';
 import ScrollToTop from 'react-scroll-up'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import Loader from '../Loader';
+import { Toggle } from "react-toggle-component"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '10px',
     },
     leave_button: {
-        marginTop: 20
+        marginTop: 0
     },
     input: {
         display: 'none',
@@ -74,6 +75,7 @@ function PostsBycategory(props) {
         props.history.push('/groups/')
     }
 
+    const [toggle, setToggle] = useState(false)
     const [postContent, setpostContent] = useState('')
     const [file, setFile] = useState('')
 
@@ -109,11 +111,11 @@ function PostsBycategory(props) {
     // console.log(props.errors.message)
 
     const handleUpvotePrivatePost = (id) => {
-        props.UpVote(id,props.auth.user.userId)
+        props.UpVote(id, props.auth.user.userId)
     }
 
     const handleDownvotePrivatePost = (id) => {
-        props.DownVote(id,props.auth.user.userId)
+        props.DownVote(id, props.auth.user.userId)
     }
 
     const handleDeletePrivatePost = (id) => {
@@ -144,54 +146,70 @@ function PostsBycategory(props) {
     return (
         <Layout>
             <Container maxWidth="lg" >
-                <Fab className={classes.leave_button + ' leave_group_icon'} size="medium" color="secondary" variant="extended" onClick={() => handleLeaveGroup(props.match.params.groupId)}>
-                    <ExitToAppIcon className={classes.extendedIcon} />
-                    <span style={{ marginLeft: '10px' }} >Leave Group</span>
-                </Fab>
-                <div className="create__post__">
-                    <form onSubmit={handleSubmitPost} className="post_create_content" >
-                        <textarea
-                            type="text"
-                            className="styled__textarea"
-                            name="postContent"
-                            value={postContent}
-                            onChange={(e) => setpostContent(e.target.value)}
+                <div className="imp_private-info">
+                    <Fab className={classes.leave_button + ' leave_group_icon'} size="medium" color="secondary" variant="extended" onClick={() => handleLeaveGroup(props.match.params.groupId)}>
+                        <ExitToAppIcon className={classes.extendedIcon} />
+                        <span style={{ marginLeft: '10px' }} >Leave Group</span>
+                    </Fab>
+                    <p>
+                        {props.match.params.groupName}
+                    </p>
+                    <div htmlFor="toggle-1">
+                        <Toggle
+                            name="toggle-1"
+                            rightBackgroundColor="#04A54B"
+                            leftKnobColor="grey"
+                            rightKnobColor="white"
+                            onToggle={() => setToggle((state) => !state)}
                         />
-                        <input
-                            className={classes.input}
-                            id="contained-button-file"
-                            type="file"
-                            name="file"
-                            onChange={(e) => setFile(e.target.files[0])}
-                        />
-                        <div className="buttons_post">
-                            <label htmlFor="contained-button-file" className="only_upload_button" >
-                                <Button fullWidth className="upload_button" size="small" variant="contained" component="span">
-                                    <AttachmentIcon style={{ marginRight: '8px' }} /> <span style={{ fontWeight: '700' }} >Upload</span>
-                                </Button>
-                            </label>
-                            <Button className={postContent ? 'post_submit_button' : 'disabled_post_submit_button'} disabled={!postContent} size="small" variant="contained" type="submit" >
-                                <CreateIcon style={{ marginRight: '8px' }} />  <span style={{ fontWeight: '700' }}>Create Post</span>
-                            </Button>
-                        </div>
-                        <Progress
-                            style={{ marginTop: '15px' }}
-                            percent={props.percentage}
-                            theme={{
-                                active: {
-                                    color: '#04A34A'
-                                },
-                                success: {
-                                    symbol: '✅',
-                                    color: '#04A34A'
-                                },
-                                default: {
-                                    symbol: '❌',
-                                }
-                            }}
-                        />
-                    </form>
+                    </div>
                 </div>
+                {toggle && (
+                    <div className="create__post__">
+                        <form onSubmit={handleSubmitPost} className="post_create_content" >
+                            <textarea
+                                type="text"
+                                className="styled__textarea"
+                                name="postContent"
+                                value={postContent}
+                                onChange={(e) => setpostContent(e.target.value)}
+                            />
+                            <input
+                                className={classes.input}
+                                id="contained-button-file"
+                                type="file"
+                                name="file"
+                                onChange={(e) => setFile(e.target.files[0])}
+                            />
+                            <div className="buttons_post">
+                                <label htmlFor="contained-button-file" className="only_upload_button" >
+                                    <Button fullWidth className="upload_button" size="small" variant="contained" component="span">
+                                        <AttachmentIcon style={{ marginRight: '8px' }} /> <span style={{ fontWeight: '700' }} >Upload</span>
+                                    </Button>
+                                </label>
+                                <Button className={postContent ? 'post_submit_button' : 'disabled_post_submit_button'} disabled={!postContent} size="small" variant="contained" type="submit" >
+                                    <CreateIcon style={{ marginRight: '8px' }} />  <span style={{ fontWeight: '700' }}>Create Post</span>
+                                </Button>
+                            </div>
+                            <Progress
+                                style={{ marginTop: '15px' }}
+                                percent={props.percentage}
+                                theme={{
+                                    active: {
+                                        color: '#04A34A'
+                                    },
+                                    success: {
+                                        symbol: '✅',
+                                        color: '#04A34A'
+                                    },
+                                    default: {
+                                        symbol: '❌',
+                                    }
+                                }}
+                            />
+                        </form>
+                    </div>
+                )}
                 <div className="posts_div">
                     <FlipMove
                         enterAnimation={{

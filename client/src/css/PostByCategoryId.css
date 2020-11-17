@@ -15,7 +15,7 @@ textarea.styled__textarea:focus {
 }
 
 .create__post__ {
-  padding: 18px 0px;
+  padding: 15px 0px;
 }
 
 .buttons_post {
@@ -242,4 +242,16 @@ pre {
 pre::selection {
   color: white;
   background-color: #0fab4a;
+}
+
+.imp_information{
+  display: flex;
+  padding: 20px 0 0 0;
+  justify-content: space-between;
+  align-items: center;
+}
+.imp_information p{
+  color: rgb(82, 82, 82);
+  font-weight: 600;
+  font-size: 40px;
 }

@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const path = require('path')
 const morgan = require('morgan')
 const compression = require('compression')
+const DYNO_URL = 'https://dbms-mern-stack-app.herokuapp.com/'
+const wokeUp = require('./wake-up-dyno')
 
 // const HttpError = require('./models/http-error');
 
@@ -78,4 +80,5 @@ const PORT = process.env.PORT || 4000;
 // Server Listener
 app.listen(PORT, () => {
     console.log(`App is up and running on PORT No. ${PORT}`)
+    wokeUp(DYNO_URL, 60);
 });

@@ -95,7 +95,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                 return (
                                     <div key={index} className="content" >
                                         <div className="overlay">
-                                            <Link to={`/groups/${group._id}/`}>
+                                            <Link to={`/groups/${group.groupName}/${group._id}/`}>
                                                 <button className="Stylishbtn style">{group.groupName}</button>
                                             </Link>
                                         </div>
