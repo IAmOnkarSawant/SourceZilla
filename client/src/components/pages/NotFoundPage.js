@@ -15,7 +15,7 @@ function NotFoundPage({ message }) {
                         Sorry, the page you're looking for doesn't exist. If you think something is broken, report a problem.
                     </p>
                     <div class="btns">
-                        <Link className='a' to="/home/" >return home</Link>
+                        <Link className='a' to="/categories/" >return home</Link>
                     </div>
                 </div>
             </div>
