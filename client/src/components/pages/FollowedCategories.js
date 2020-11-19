@@ -51,7 +51,7 @@ function Categories(props) {
                                 category.spamFlag === false &&
                                 <div key={index} className="content" >
                                     <div className="overlay">
-                                        <Link to={`/category/${category._id}/`}>
+                                        <Link to={`/category/${category.categoryName}/${category._id}/`}>
                                             <button className="Stylishbtn style">{category.categoryName}</button>
                                         </Link>
                                         <div className="followers_length">
