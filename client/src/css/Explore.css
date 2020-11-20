@@ -1,51 +1,67 @@
-.explore {
-  width: 100%;
-  height: calc(100vh - 64px );
+.explore_btn {
+  border: 2px solid #6c63ff !important;
+  color: black !important;
+  padding: 10px 40px !important;
+  border-radius: 30px !important;
+  margin-top: 25px !important;
+  cursor: pointer !important;
+  transition: background-color 0.25s linear !important ;
+}
+.explore_btn_signin {
+  background-color: #6c63ff !important;
+  color: white !important;
+  padding: 10px 40px !important;
+  border-radius: 30px !important;
+  margin-top: 25px !important;
+  cursor: pointer !important;
+  transition: background-color 0.25s linear !important ;
+}
+.explore_btn_signin:hover {
+  background-color: #544cec !important;
+}
+
+.Explore_title {
+  font-size: 45px;
+  font-weight: 600;
+  color: rgb(204, 203, 203);
+  color: rgb(77, 76, 76);
+}
+.aboutUs,
+.Features,
+.Developers {
+  font-size: 35px;
+  font-weight: 700;
+  color: grey;
+  text-align: center;
+  padding-bottom: 25px;
+  padding-top: 75px;
+}
+
+.toolbar_explore {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
-
-.grid__container {
-  display: grid;
-  grid-template-columns: repeat(8, 50px);
-  grid-template-rows: repeat(2, 50px);
-  grid-gap: 8px;
-  z-index: 1;
-  cursor: pointer;
+.toolbarLeft {
+  display: flex !important;
+  align-items: center !important;
 }
-
-.grid__container > div.grid-item {
-  background-color: #fdd835;
+.toolbarRight > * {
   color: black;
-  font-size: 1.92938em;
-  font-weight: 800;
-  box-shadow: 0 0.15rem 0 #ff8f00;
-  border-radius: 7px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.5s ease-in-out;
+  margin: 0 20px !important;
+  font-size: 18px !important;
+  font-family: sans-serif !important;
+  cursor: pointer !important;
 }
 
-.grid__container:hover div.grid-item:nth-child(1) {
-  transform: translate3d(10rem, 12rem, 0) rotate(-15deg);
+.home,
+.aboutus,
+.features,
+.developers {
+  padding: 10px 20px;
 }
-.grid__container:hover div.grid-item:nth-child(2) {
-  transform: translate3d(-13.2rem, 1rem, 0) rotate(7deg);
-}
-.grid__container:hover div.grid-item:nth-child(3) {
-  transform: translate3d(-12rem, 5rem, 0) rotate(7deg);
-}
-.grid__container:hover div.grid-item:nth-child(4) {
-  transform: translate3d(11rem, 3rem, 0) rotate(-17deg);
-}
-.grid__container:hover div.grid-item:nth-child(5) {
-  transform: translate3d(19rem, 4rem, 0) rotate(11deg);
-}
-.grid__container:hover div.grid-item:nth-child(6) {
-  transform: translate3d(-20rem, 13rem, 0) rotate(15deg);
-}
-.grid__container:hover div.grid-item:nth-child(7) {
-  transform: translate3d(23rem, -6rem, 0) rotate(17deg);
+
+.active {
+  border-bottom:4px solid #6c63ff;
+  border-radius: 2.5px;
 }

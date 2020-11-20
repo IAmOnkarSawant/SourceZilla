@@ -44,7 +44,7 @@ export const loginUser = (user, history) => {
                         token: token
                     }
                 })
-                history.push('/explore/');
+                history.push('/categories/');
 
                 toast.dark("Login Successfully 🔓", options);
             })

@@ -55,7 +55,7 @@ function SignUp(props) {
     }
 
     if(localStorage.jwtToken){
-        props.history.push('/home/')
+        props.history.push('/categories/')
     }
 
     return (
