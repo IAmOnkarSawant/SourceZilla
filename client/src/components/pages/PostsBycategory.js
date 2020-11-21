@@ -288,14 +288,14 @@ function PostsBycategory(props) {
                                                 />
                                             )}
                                             {ApplicationFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={`/posts/file/${post.fileName}`} target="_blank" >
+                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
                                                     <Button className="link_button_file" variant="contained" size="small">
                                                         View Document
                                                     </Button>
                                                 </a>
                                             )}
                                             {TextFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={`/posts/file/${post.fileName}`} target="_blank" >
+                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
                                                     <Button className="link_button_file" variant="contained" size="small">
                                                         View Document
                                                     </Button>
