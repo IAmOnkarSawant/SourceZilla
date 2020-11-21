@@ -185,22 +185,22 @@ function PostIndividual(props) {
                         </Typography>
                         {ImageFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
                             <ModalImage
-                                small={`/posts/file/${props?.postIndividual?.fileName}`}
-                                medium={`/posts/file/${props?.postIndividual?.fileName}`}
+                                small={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`}
+                                medium={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`}
                                 showRotate
                                 imageBackgroundColor="transparent"
                                 alt=""
                             />
                         )}
                         {ApplicationFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
-                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={`/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
+                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
                                 <Button className="link_button_file" variant="contained" size="small">
                                     View Document
                                 </Button>
                             </a>
                         )}
                         {TextFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
-                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={`/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
+                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
                                 <Button className="link_button_file" variant="contained" size="small">
                                     View Document
                                 </Button>

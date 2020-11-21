@@ -75,7 +75,7 @@ function PostsBycategory(props) {
         props.history.push('/groups/')
     }
 
-    const [toggle, setToggle] = useState(false)
+    const [toggle, setToggle] = useState(true)
     const [postContent, setpostContent] = useState('')
     const [file, setFile] = useState('')
 
@@ -157,9 +157,11 @@ function PostsBycategory(props) {
                     <div htmlFor="toggle-1">
                         <Toggle
                             name="toggle-1"
-                            rightBackgroundColor="#04A54B"
-                            leftKnobColor="grey"
-                            rightKnobColor="white"
+                            leftBackgroundColor="#04A54B"
+                            leftBorderColor="#04A44B"
+                            rightBorderColor="grey"
+                            rightKnobColor="grey"
+                            leftKnobColor="white"
                             onToggle={() => setToggle((state) => !state)}
                         />
                     </div>

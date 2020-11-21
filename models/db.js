@@ -5,8 +5,11 @@ const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const HttpError = require('./http-error');
+require('dotenv').config({ path: __dirname + './../.env' });
 
-mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017/DBMS', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, useCreateIndex: true }, (err) => {
+let URL = process.env.NODE_ENV === 'production' ? process.env.DB_URL : process.env.DB_URL_LOCAL
+
+mongoose.connect(URL, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, useCreateIndex: true }, (err) => {
   if (!err) {
     console.log('Connection to Database has been established.');
   }
@@ -26,7 +29,7 @@ conn.once('open', () => {
 
 // Create Storage Engine
 const storage = new GridFsStorage({
-  url: process.env.DB_URL,
+  url: URL,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
