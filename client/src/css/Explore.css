@@ -1,5 +1,5 @@
 .explore_btn {
-  border: 2px solid #6c63ff !important;
+  border: 2px solid#05A54B !important;
   color: black !important;
   padding: 10px 40px !important;
   border-radius: 30px !important;
@@ -8,7 +8,7 @@
   transition: background-color 0.25s linear !important ;
 }
 .explore_btn_signin {
-  background-color: #6c63ff !important;
+  background-color: #05a54b !important;
   color: white !important;
   padding: 10px 40px !important;
   border-radius: 30px !important;
@@ -17,7 +17,7 @@
   transition: background-color 0.25s linear !important ;
 }
 .explore_btn_signin:hover {
-  background-color: #544cec !important;
+  background-color: #0d9247 !important;
 }
 
 .Explore_title {
@@ -62,6 +62,6 @@
 }
 
 .active {
-  border-bottom:4px solid #6c63ff;
+  border-bottom: 4px solid #05a54b;
   border-radius: 2.5px;
 }

@@ -15,7 +15,7 @@ export default function HideAppBar(props) {
                     <Container maxWidth="lg">
                         <Toolbar className="toolbar_explore">
                             <div className="toolbarLeft">
-                                <AdjustIcon style={{transform : 'scale(1.3)',color : '#6C63FF'}} />
+                                <AdjustIcon style={{transform : 'scale(1.3)',color : '#05A54B'}} />
                                 <Typography style={{ paddingLeft : '10px',fontSize: '27px', fontFamily: 'monospace', fontWeight: '600' }} variant="h6">BrandName</Typography>
                             </div>
                             <div className="toolbarRight">
