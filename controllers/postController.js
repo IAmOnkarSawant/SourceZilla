@@ -413,10 +413,6 @@ router.patch('/upvote', authenticate, async (req, res, next) => {
         return next(error);
     }
 
-    if (post.upvotes.includes(userId)) {
-        const error = new HttpError('You have already upvoted this post', 400);
-        return next(error);
-    }
 
     if (post.downvotes.includes(userId)) {
 
@@ -429,13 +425,24 @@ router.patch('/upvote', authenticate, async (req, res, next) => {
 
     }
 
-    try {
-        updatedPost = await Post.findByIdAndUpdate(postId, { $push: { upvotes: userId } }, { new: true });
-    } catch (err) {
-        const error = new HttpError('Error while upvoting', 500);
-        return next(error);
-    }
+    if (post.upvotes.includes(userId)) {
 
+        try {
+            updatedPost = await Post.findByIdAndUpdate(postId, { $pull: { upvotes: userId } }, { new: true });
+        } catch (err) {
+            const error = new HttpError('Error while upvoting', 500);
+            return next(error);
+        }
+
+    } else {
+
+        try {
+            updatedPost = await Post.findByIdAndUpdate(postId, { $addToSet: { upvotes: userId } }, { new: true });
+        } catch (err) {
+            const error = new HttpError('Error while upvoting', 500);
+            return next(error);
+        }
+    }
 
     res.status(200).json({ message: 'Upvote Success', userId: userId, upvotes: updatedPost.upvotes, downvotes: updatedPost.downvotes });
 
@@ -457,10 +464,6 @@ router.patch('/downvote', authenticate, async (req, res, next) => {
         return next(error);
     }
 
-    if (post.downvotes.includes(userId)) {
-        const error = new HttpError('You have already downvoted this post', 400);
-        return next(error);
-    }
 
     if (post.upvotes.includes(userId)) {
         try {
@@ -471,11 +474,24 @@ router.patch('/downvote', authenticate, async (req, res, next) => {
         }
     }
 
-    try {
-        updatedPost = await Post.findByIdAndUpdate(postId, { $push: { downvotes: userId } }, { new: true });
-    } catch (err) {
-        const error = new HttpError('Error while upvoting', 500);
-        return next(error);
+    if (post.downvotes.includes(userId)) {
+
+        try {
+            updatedPost = await Post.findByIdAndUpdate(postId, { $pull: { downvotes: userId } }, { new: true });
+        } catch (err) {
+            const error = new HttpError('Error while upvoting', 500);
+            return next(error);
+        }
+
+    } else {
+
+        try {
+            updatedPost = await Post.findByIdAndUpdate(postId, { $addToSet: { downvotes: userId } }, { new: true });
+        } catch (err) {
+            const error = new HttpError('Error while upvoting', 500);
+            return next(error);
+        }
+
     }
 
     res.status(200).json({ message: 'Downvote Success', userId: userId, upvotes: updatedPost.upvotes, downvotes: updatedPost.downvotes });

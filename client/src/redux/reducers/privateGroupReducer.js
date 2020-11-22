@@ -1,6 +1,6 @@
 const initialState = {
     groups: [],
-    groupsIndividual: {},
+    groupsIndividualPosts: [],
     passcode: ''
 }
 
@@ -14,74 +14,77 @@ const privategroupreducer = (state = initialState, action) => {
         case 'CREATE_PRIVATE_GROUP':
             return {
                 ...state,
-                groups: [...state.groups, action.payload],
+                groups: [
+                    action.payload,
+                    ...state.groups,
+                ],
                 passcode: action.passcode
             }
         case 'GET_PRIVATE_POSTS_BY_GROUP_ID':
             return {
                 ...state,
-                groupsIndividual: action.payload
+                groupsIndividualPosts: action.payload
             }
         case 'CLEAR_INDIVIDUAL_POSTS':
             return {
                 ...state,
-                groupsIndividual: []
+                groupsIndividualPosts: []
             }
         case 'CREATE_PRIVATE_POST':
             return {
                 ...state,
-                groupsIndividual: {
-                    ...state.groupsIndividual,
-                    posts: [
-                        ...state.groupsIndividual.posts,
-                        action.payload
-                    ]
-                }
+                groupsIndividualPosts: [
+                    action.payload,
+                    ...state.groupsIndividualPosts
+                ]
             }
 
         //UPVOTES AND DOWNVOTES
         case 'UPVOTE_PRIVATE_POST':
             return {
                 ...state,
-                groupsIndividual: {
-                    ...state.groupsIndividual,
-                    posts: state.groupsIndividual.posts.map(post => {
-                        if (post._id === action.postId) {
-                            return {
-                                ...post,
-                                upvotes: [...post.upvotes, action.payload],
-                                downvotes: post.downvotes.filter(downvote => downvote !== action.payload)
-                            }
+                groupsIndividualPosts: state.groupsIndividualPosts.map(post => {
+                    if (post._id === action.postId) {
+                        return {
+                            ...post,
+                            upvotes: post.upvotes.includes(action.payload) ?
+                                post.upvotes.filter(upvote => upvote !== action.payload) :
+                                [
+                                    ...post.upvotes,
+                                    action.payload
+                                ]
+                            ,
+                            downvotes: post.downvotes.filter(downvote => downvote !== action.payload)
                         }
-                        return post
-                    })
-                }
+                    }
+                    return post
+                })
             }
         case 'DOWNVOTE_PRIVATE_POST':
             return {
                 ...state,
-                groupsIndividual: {
-                    ...state.groupsIndividual,
-                    posts: state.groupsIndividual.posts.map(post => {
-                        if (post._id === action.postId) {
-                            return {
-                                ...post,
-                                downvotes: [...post.downvotes, action.payload],
-                                upvotes: post.upvotes.filter(upvote => upvote !== action.payload),
-                            }
+                groupsIndividualPosts: state.groupsIndividualPosts.map(post => {
+                    if (post._id === action.postId) {
+                        return {
+                            ...post,
+                            downvotes: post.downvotes.includes(action.payload) ?
+                                post.downvotes.filter(downvote => downvote !== action.payload) :
+                                [
+                                    ...post.downvotes,
+                                    action.payload
+                                ]
+                            ,
+                            upvotes: post.upvotes.filter(upvote => upvote !== action.payload),
                         }
-                        return post
-                    })
-                }
+                    }
+                    return post
+                })
             }
 
         case 'DELETE_PRIVATE_POST':
             return {
                 ...state,
-                groupsIndividual: {
-                    ...state.groupsIndividual,
-                    posts: state.groupsIndividual.posts.filter(post => post._id !== action.payload)
-                }
+                groupsIndividualPosts: state.groupsIndividualPosts.filter(post => post._id !== action.payload)
             }
 
         case 'CLEAN_PASSCODE':
@@ -93,21 +96,18 @@ const privategroupreducer = (state = initialState, action) => {
         case 'REPORT_PRIVATE_POST':
             return {
                 ...state,
-                groupsIndividual: {
-                    ...state.groupsIndividual,
-                    posts: state.groupsIndividual.posts.map(post => {
-                        if (post._id === action.payload) {
-                            return {
-                                ...post,
-                                reports: [
-                                    ...post.reports,
-                                    action.userId
-                                ]
-                            }
+                groupsIndividualPosts: state.groupsIndividualPosts.map(post => {
+                    if (post._id === action.payload) {
+                        return {
+                            ...post,
+                            reports: [
+                                ...post.reports,
+                                action.userId
+                            ]
                         }
-                        return post
-                    })
-                }
+                    }
+                    return post
+                })
             }
         default:
             return state;

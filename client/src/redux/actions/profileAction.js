@@ -35,7 +35,7 @@ export const profileMyPosts = () => {
             .then(({ data: { posts } }) => {
                 dispatch({
                     type: 'PROFILE_MYPOSTS',
-                    payload: posts
+                    payload: posts.reverse()
                 })
                 dispatch({
                     type: 'LOADING',
@@ -58,7 +58,7 @@ export const profileResourceBox = () => {
             .then(({ data: { resourcebox } }) => {
                 dispatch({
                     type: 'PROFILE_RESOURCEBOX',
-                    payload: resourcebox
+                    payload: resourcebox.reverse()
                 })
                 dispatch({
                     type: 'LOADING',

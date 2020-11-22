@@ -224,7 +224,7 @@ function PostsBycategory(props) {
                         }}
                     >
                         {
-                            props.groupsIndividual.posts && props.groupsIndividual.posts.map(post =>
+                            props.groupsIndividualPosts && props.groupsIndividualPosts.map(post =>
                                 <Card key={post._id} className={classes.root + " post_card"}>
                                     <div className={`${post.spamFlag === true ? 'bg-content' : ''}`} style={{ position: 'relative' }}>
                                         <CardHeader
@@ -391,7 +391,7 @@ function PostsBycategory(props) {
 
 const mapStateToProps = (state) => {
     return {
-        groupsIndividual: state.groups.groupsIndividual,
+        groupsIndividualPosts: state.groups.groupsIndividualPosts,
         errors: state.errors.Errors,
         auth: state.auth,
         loading: state.loading.loading,

@@ -311,7 +311,7 @@ function PostIndividual(props) {
                                     {    //remain
                                         props.comments && props.comments.map((comment, index) => {
                                             return (
-                                                <Box elevation={0} className="comment" key={comment._id} >
+                                                <Box elevation={0} className="comment" key={index} >
                                                     <div className="content__comment">
                                                         <span className="commentBy">
                                                             {comment.commentBy}

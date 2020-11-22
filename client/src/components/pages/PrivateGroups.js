@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import store from '../../redux/store'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import FileCopyIcon from '@material-ui/icons/FileCopy'
+import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import SendIcon from '@material-ui/icons/Send';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Loader from '../Loader'
@@ -98,6 +99,13 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                             <Link to={`/groups/${group.groupName}/${group._id}/`}>
                                                 <button className="Stylishbtn style">{group.groupName}</button>
                                             </Link>
+                                            <p style={{ color: 'grey',letterSpacing : '1px', paddingBottom: '10px', fontFamily: 'sans-serif' }}>
+                                                {group.groupAdmin}
+                                            </p>
+                                            <div className="followers_length">
+                                                <PeopleAltOutlinedIcon className="people_icon" />
+                                                {group.groupMembers}
+                                            </div>
                                         </div>
                                         <div className="Join_group_buttton">
                                             {!details?.myPrivateGroups?.includes(group._id) ? (

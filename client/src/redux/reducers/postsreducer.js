@@ -1,6 +1,5 @@
 const initialState = {
     categories: [],
-    sort: '',
     posts: [],
     postIndividual: {},
     comments: [],
@@ -21,8 +20,8 @@ const postreducer = (state = initialState, action) => {
             return {
                 ...state,
                 categories: [
-                    ...state.categories,
                     action.payload,
+                    ...state.categories,
                 ],
             }
         case 'REPORT_CATEGORY':
@@ -67,8 +66,8 @@ const postreducer = (state = initialState, action) => {
             return {
                 ...state,
                 posts: [
+                    action.payload,
                     ...state.posts,
-                    action.payload
                 ]
             }
         case 'POST_DELETE':
@@ -90,14 +89,6 @@ const postreducer = (state = initialState, action) => {
             return {
                 ...state,
                 comments: action.payload
-            }
-        case 'POST_COMMENT':
-            return {
-                ...state,
-                comments: [
-                    ...state.comments,
-                    action.payload
-                ]
             }
         case 'COMMENT_DELETE':
             return {
@@ -144,10 +135,13 @@ const postreducer = (state = initialState, action) => {
                     if (post._id === action.postId) {
                         return {
                             ...post,
-                            upvotes: [
-                                ...post.upvotes,
-                                action.payload
-                            ],
+                            upvotes: post.upvotes.includes(action.payload) ?
+                                post.upvotes.filter(upvote => upvote !== action.payload) :
+                                [
+                                    ...post.upvotes,
+                                    action.payload
+                                ]
+                            ,
                             downvotes: post.downvotes.filter(downvote => downvote !== action.payload)
                         }
                     }
@@ -161,10 +155,13 @@ const postreducer = (state = initialState, action) => {
                     if (post._id === action.postId) {
                         return {
                             ...post,
-                            downvotes: [
-                                ...post.downvotes,
-                                action.payload
-                            ],
+                            downvotes: post.downvotes.includes(action.payload) ?
+                                post.downvotes.filter(downvote => downvote !== action.payload) :
+                                [
+                                    ...post.downvotes,
+                                    action.payload
+                                ]
+                            ,
                             upvotes: post.upvotes.filter(upvote => upvote !== action.payload)
                         }
                     }
@@ -176,10 +173,13 @@ const postreducer = (state = initialState, action) => {
                 ...state,
                 postIndividual: {
                     ...state.postIndividual,
-                    upvotes: [
-                        ...state.postIndividual.upvotes,
-                        action.payload
-                    ],
+                    upvotes: state.postIndividual.upvotes.includes(action.payload) ?
+                        state.postIndividual.upvotes.filter(upvote => upvote !== action.payload) :
+                        [
+                            ...state.postIndividual.upvotes,
+                            action.payload
+                        ]
+                    ,
                     downvotes: state.postIndividual.downvotes.filter(downvote => downvote !== action.payload)
                 }
             }
@@ -188,17 +188,23 @@ const postreducer = (state = initialState, action) => {
                 ...state,
                 postIndividual: {
                     ...state.postIndividual,
-                    downvotes: [
-                        ...state.postIndividual.downvotes,
-                        action.payload
-                    ],
+                    downvotes: state.postIndividual.downvotes.includes(action.payload) ?
+                        state.postIndividual.downvotes.filter(udownvote => udownvote !== action.payload) :
+                        [
+                            ...state.postIndividual.downvotes,
+                            action.payload
+                        ]
+                    ,
                     upvotes: state.postIndividual.upvotes.filter(upvote => upvote !== action.payload)
                 }
             }
         case 'POST_COMMENT_INDIVIDUAL': {
             return {
                 ...state,
-                comments: [...state.comments, action.payload]
+                comments: [
+                    action.payload,
+                    ...state.comments,
+                ]
             }
         }
         case 'CLEAN_COMMENTS':

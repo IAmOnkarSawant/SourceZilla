@@ -80,7 +80,7 @@ router.get('/followedCategories', authenticate, async (req, res, next) => {
 
     let followedCategories;
     try {
-        followedCategories = await Categories.find({ 'followers': mongoose.Types.ObjectId(req.user.userId) });
+        followedCategories = await Categories.find({ 'followers': mongoose.Types.ObjectId(req.user.userId) }).sort({ _id: -1 });
     } catch (err) {
         const error = new HttpError('Unable to process your request', 500);
         return next(error);

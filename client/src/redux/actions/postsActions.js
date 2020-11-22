@@ -123,7 +123,7 @@ export const getPosts = (categoryId) => {
             .then(({ data: { category: { posts } } }) => {
                 dispatch({
                     type: 'GET_POSTS_BY_CAT_ID',
-                    payload: posts
+                    payload: posts.reverse()                     //reverse array 
                 })
                 dispatch({
                     type: 'LOADING',
@@ -146,7 +146,7 @@ export const getPostComments = (postId) => {
             .then(({ data: { comments } }) => {
                 dispatch({
                     type: 'GET_COMMENTS_BY_POST_ID',
-                    payload: comments
+                    payload: comments.reverse()
                 })
                 console.log(comments)
             })
@@ -182,7 +182,7 @@ export const postCreate = (data) => {
                         type: 'PROGRESS',
                         payload: 0
                     })
-                }, 1800)
+                }, 1200)
                 console.log(data)
             })
             .catch(error => {
@@ -203,29 +203,6 @@ export const getPostIndividual = (postId) => {
                     type: 'GET_INDIVIDUAL_POST_BY_POST_ID',
                     payload: postDetails
                 })
-            })
-            .catch(error => {
-                dispatch({
-                    type: 'GET_ERRORS',
-                    payload: error.response.data
-                });
-                console.log(error.response.data)
-            })
-    }
-}
-
-export const postComment = (commentData, postId) => {
-    return (dispatch) => {
-        Axios.post(`/posts/comment/`, commentData)
-            .then(({ data }) => {
-                dispatch({
-                    type: 'POST_COMMENT',
-                    payload: data.comment,
-                    postId: postId
-                })
-                console.log(commentData)
-                console.log(data)
-                console.log(postId)
             })
             .catch(error => {
                 dispatch({

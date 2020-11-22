@@ -81,16 +81,16 @@ export const getprivateGroupPostsById = (privateGroupId) => {            //
             payload: true
         })
         Axios.get(`/privategroup/view/${privateGroupId}/`)
-            .then(({ data: { groups } }) => {
+            .then(({ data: { groupsPosts } }) => {
                 dispatch({
                     type: 'GET_PRIVATE_POSTS_BY_GROUP_ID',
-                    payload: groups
+                    payload: groupsPosts.reverse()
                 })
                 dispatch({
                     type: 'LOADING',
                     payload: false
                 })
-                console.log(groups)
+                console.log(groupsPosts)
             })
             .catch(err => {
                 dispatch({
@@ -127,7 +127,7 @@ export const createPrivateGroupPost = (data) => {
                         type: 'PROGRESS',
                         payload: 0
                     })
-                }, 1800)
+                }, 1200)
                 console.log(newPost)
             })
             .catch(error => {
