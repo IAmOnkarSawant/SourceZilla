@@ -236,11 +236,11 @@ function PostsBycategory(props) {
                                                 <div className="post_right_buttons">
                                                     {
                                                         props.auth.user.userId === post.postByUserId ? (
-                                                            <IconButton className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained"  >
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained"  >
                                                                 <DeleteIcon />
                                                             </IconButton>
                                                         ) : (
-                                                                <IconButton disabled className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained" >
+                                                                <IconButton disableFocusRipple={true} disableRipple={true} disabled className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained" >
                                                                     <DeleteIcon />
                                                                 </IconButton>
                                                             )
@@ -249,11 +249,11 @@ function PostsBycategory(props) {
                                                         // post.spamFlag === false &&
                                                         (
                                                             post?.reports?.includes(props.auth.user.userId) ? (
-                                                                <IconButton style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
+                                                                <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
                                                                     <FlagIcon />
                                                                 </IconButton>
                                                             ) : (
-                                                                    <IconButton style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
+                                                                    <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
                                                                         <FlagOutlinedIcon />
                                                                     </IconButton>
                                                                 )
@@ -261,11 +261,11 @@ function PostsBycategory(props) {
                                                     }
                                                     {
                                                         props?.details?.resourceBox?.includes(post._id) ? (
-                                                            <IconButton style={{ color: '#0FAB4A' }} onClick={() => removeFromResource(post._id)} size="small" variant="contained"  >
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => removeFromResource(post._id)} size="small" variant="contained"  >
                                                                 <BookmarkIcon />
                                                             </IconButton>
                                                         ) : (
-                                                                <IconButton style={{ color: '#0FAB4A' }} onClick={() => addToResource(post._id)} size="small" variant="contained" >
+                                                                <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => addToResource(post._id)} size="small" variant="contained" >
                                                                     <BookmarkBorderOutlinedIcon />
                                                                 </IconButton>
                                                             )
@@ -326,13 +326,13 @@ function PostsBycategory(props) {
                                             {
                                                 post?.upvotes?.includes(props?.auth?.user?.userId) ? (
                                                     <div className="down__vote">
-                                                        <IconButton onClick={() => handleUpvote(post._id)} aria-label="add to favorites" style={{ color: `${post?.upvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvote(post._id)} aria-label="add to favorites" style={{ color: `${post?.upvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
                                                             <ThumbUpAltIcon />
                                                             <Typography className={classes.up_votes_count} variant="h6" component="h6">
                                                                 {post.upvotes.length}
                                                             </Typography>
                                                         </IconButton>
-                                                        <IconButton onClick={() => handleDownvote(post._id)} aria-label="remove from favorites">
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvote(post._id)} aria-label="remove from favorites">
                                                             <ThumbDownAltIcon />
                                                             <Typography className={classes.down_votes_count} variant="h6" component="h6">
                                                                 {post.downvotes.length}
@@ -341,13 +341,13 @@ function PostsBycategory(props) {
                                                     </div>
                                                 ) : (
                                                         <div className="up__vote">
-                                                            <IconButton onClick={() => handleUpvote(post._id)} aria-label="add to favorites">
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvote(post._id)} aria-label="add to favorites">
                                                                 <ThumbUpAltIcon />
                                                                 <Typography className={classes.up_votes_count} variant="h6" component="h6">
                                                                     {post.upvotes.length}
                                                                 </Typography>
                                                             </IconButton>
-                                                            <IconButton onClick={() => handleDownvote(post._id)} aria-label="remove from favorites" style={{ color: `${post?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvote(post._id)} aria-label="remove from favorites" style={{ color: `${post?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
                                                                 <ThumbDownAltIcon />
                                                                 <Typography className={classes.down_votes_count} variant="h6" component="h6">
                                                                     {post.downvotes.length}
@@ -357,7 +357,7 @@ function PostsBycategory(props) {
                                                     )
                                             }
                                             <Link to={`/post/${post._id}`} >
-                                                <IconButton style={{ marginLeft: '10px' }} size="small" variant="contained" color="default" >
+                                                <IconButton disableFocusRipple={true} disableRipple={true} style={{ marginLeft: '10px' }} size="small" variant="contained" color="default" >
                                                     <LaunchIcon />
                                                 </IconButton>
                                             </Link>

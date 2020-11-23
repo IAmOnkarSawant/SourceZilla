@@ -160,11 +160,11 @@ function PostIndividual(props) {
                             <div>
                                 {props.postIndividual.accessibilty === 'public' ? (
                                     props?.details?.resourceBox?.includes(props?.match?.params?.postId) ? (
-                                        <IconButton style={{ color: '#0FAB4A', margin: '15px 20px 0 0' }} onClick={() => RemoveResourceFromIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
+                                        <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A', margin: '15px 20px 0 0' }} onClick={() => RemoveResourceFromIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
                                             <BookmarkIcon />
                                         </IconButton>
                                     ) : (
-                                            <IconButton style={{ color: '#0FAB4A', margin: '15px 20px 0 0' }} onClick={() => addResourceToIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
+                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A', margin: '15px 20px 0 0' }} onClick={() => addResourceToIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
                                                 <BookmarkBorderOutlinedIcon />
                                             </IconButton>
                                         )
@@ -229,13 +229,13 @@ function PostIndividual(props) {
                         {
                             props?.postIndividual?.upvotes?.includes(props?.auth?.user?.userId) ? (
                                 <div className="down__vote">
-                                    <IconButton onClick={() => handleUpvoteFromIndividual(props.match.params.postId)} aria-label="add to favorites" style={{ color: `${props?.postIndividual?.upvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
+                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvoteFromIndividual(props.match.params.postId)} aria-label="add to favorites" style={{ color: `${props?.postIndividual?.upvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
                                         <ThumbUpAltIcon />
                                         <Typography className={classes.up_votes_count} variant="h6" component="h6">
                                             {props?.postIndividual?.upvotes?.length}
                                         </Typography>
                                     </IconButton>
-                                    <IconButton onClick={() => handleDownvoteFromIndividual(props.match.params.postId)} aria-label="remove from favorites">
+                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvoteFromIndividual(props.match.params.postId)} aria-label="remove from favorites">
                                         <ThumbDownAltIcon />
                                         <Typography className={classes.down_votes_count} variant="h6" component="h6">
                                             {props?.postIndividual?.downvotes?.length}
@@ -244,13 +244,13 @@ function PostIndividual(props) {
                                 </div>
                             ) : (
                                     <div className="up__vote">
-                                        <IconButton onClick={() => handleUpvoteFromIndividual(props.match.params.postId)} aria-label="add to favorites">
+                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvoteFromIndividual(props.match.params.postId)} aria-label="add to favorites">
                                             <ThumbUpAltIcon />
                                             <Typography className={classes.up_votes_count} variant="h6" component="h6">
                                                 {props?.postIndividual?.upvotes?.length}
                                             </Typography>
                                         </IconButton>
-                                        <IconButton onClick={() => handleDownvoteFromIndividual(props.match.params.postId)} aria-label="remove from favorites" style={{ color: `${props?.postIndividual?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
+                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvoteFromIndividual(props.match.params.postId)} aria-label="remove from favorites" style={{ color: `${props?.postIndividual?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
                                             <ThumbDownAltIcon />
                                             <Typography className={classes.down_votes_count} variant="h6" component="h6">
                                                 {props?.postIndividual?.downvotes?.length}
@@ -260,6 +260,7 @@ function PostIndividual(props) {
                                 )
                         }
                         <IconButton
+                            disableFocusRipple={true} disableRipple={true}
                             onClick={handleExpandClick}
                             aria-expanded={expanded}
                             aria-label="show more"
@@ -286,6 +287,7 @@ function PostIndividual(props) {
                             <form onSubmit={handleSubmit} >
                                 <div className="comment__area">
                                     <TextField
+                                        multiline
                                         className="text__field"
                                         id="standard-basic"
                                         label="Add a comment..."
@@ -325,11 +327,11 @@ function PostIndividual(props) {
                                                     </div>
                                                     {
                                                         (props.auth.user.userId === comment.commentByUser_id) ? (
-                                                            <IconButton className="post_delete" onClick={() => handleDeleteComment(comment._id)} color="default" aria-label="delete">
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} className="post_delete" onClick={() => handleDeleteComment(comment._id)} color="default" aria-label="delete">
                                                                 <DeleteIcon />
                                                             </IconButton>
                                                         ) : (
-                                                                <IconButton className="post_delete" disabled onClick={() => handleDeleteComment(comment._id)} color="default" aria-label="delete">
+                                                                <IconButton disableFocusRipple={true} disableRipple={true} className="post_delete" disabled onClick={() => handleDeleteComment(comment._id)} color="default" aria-label="delete">
                                                                     <DeleteIcon />
                                                                 </IconButton>
                                                             )
