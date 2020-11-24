@@ -27,6 +27,11 @@ export const stringMinimizer = (str, len) => {
     return str.length > len ? str.substr(0, 45) + '...' : str
 }
 
+export const replaceURLWithHTMLLinks = (text) => {
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;   //eslint-disable-line
+    return text?.replace(exp, "<a class='utilsa' href='$1' target='_blank'>$1</a>");
+}
+
 export const ImageFormat = [
     'image/jpeg',
     'image/jpg',

@@ -143,7 +143,7 @@ export const joinPrivateGroup = (Joindata, history) => {
                 toast.success(data.message, AdminOptions)
                 console.log(data)
 
-                history.push(`/groups/${Joindata.privateGroupId}/`)
+                history.push(`/groups/${Joindata.groupName}/${Joindata.privateGroupId}/`)
             })
             .catch(error => {
                 toast.error(error.response.data.message, AdminOptions)

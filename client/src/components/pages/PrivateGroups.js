@@ -4,7 +4,7 @@ import '../../css/Categories.css'
 import Layout from '../Layout'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { profileDetails } from '../../redux/actions/profileAction'
 import { getprivateGroups, createprivateGroup } from '../../redux/actions/privategroupAction'
@@ -99,7 +99,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                             <Link to={`/groups/${group.groupName}/${group._id}/`}>
                                                 <button className="Stylishbtn style">{group.groupName}</button>
                                             </Link>
-                                            <p style={{ color: 'grey',letterSpacing : '1px', paddingBottom: '10px', fontFamily: 'sans-serif' }}>
+                                            <p style={{ color: 'grey', letterSpacing: '1px', paddingBottom: '10px', fontFamily: 'sans-serif' }}>
                                                 {group.groupAdmin}
                                             </p>
                                             <div className="followers_length">
@@ -110,25 +110,25 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                         <div className="Join_group_buttton">
                                             {!details?.myPrivateGroups?.includes(group._id) ? (
                                                 <Button className="join_group_button" fullWidth size="small" variant="contained">
-                                                    <Link style={{ padding: '0px 60px' }}
+                                                    <Link style={{ padding: '0px 60px', color: 'white' }}
                                                         to={{
-                                                            pathname: `/modal/${group._id}/join/`,
+                                                            pathname: `/modal/${group.groupName}/${group._id}/join/`,
                                                             state: { modal: true }
                                                         }}
                                                     >
-                                                        Join Group
-                                                        </Link>
+                                                        Join
+                                                    </Link>
                                                 </Button>
                                             ) : (
                                                     <Button fullWidth disabled size="small" variant="contained">
-                                                        <Link style={{ padding: '0px 60px' }}
+                                                        <Link style={{ padding: '0px 60px', color: 'black' }}
                                                             to={{
-                                                                pathname: `/modal/${group._id}/join/`,
+                                                                pathname: `/modal/${group.groupName}/${group._id}/join/`,
                                                                 state: { modal: true }
                                                             }}
                                                         >
-                                                            Join Group
-                                                            </Link>
+                                                            Join
+                                                        </Link>
                                                     </Button>
                                                 )
                                             }
@@ -174,4 +174,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { profileDetails, getprivateGroups, createprivateGroup })(PrivateGroups)
+export default connect(mapStateToProps, { profileDetails, getprivateGroups, createprivateGroup })(withRouter(PrivateGroups))

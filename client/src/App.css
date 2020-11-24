@@ -10,7 +10,7 @@
 
 a {
   text-decoration: none;
-  color: white;
+  /* color: white; */
 }
 
 body {
@@ -20,12 +20,12 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: .5em;
+  width: 0.5em;
 }
 
 body::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #39424E;
+  background-color: #39424e;
 }
 
 body::-webkit-scrollbar-thumb {
@@ -38,9 +38,9 @@ body::-webkit-scrollbar-thumb {
   margin-top: 5% !important;
 }
 
-.makeStyles-drawerPaper-10 {
+/* .makeStyles-drawerPaper-10 {
   background-color: black !important;
-}
+} */
 
 .Toastify__toast--dark {
   border: 2px solid white !important;
@@ -161,7 +161,17 @@ body::-webkit-scrollbar-thumb {
   margin-top: 2vh;
 }
 
-
-.MuiIconButton-root:hover{
+.MuiIconButton-root:hover {
   background-color: transparent !important;
+}
+
+.utilsa {
+  color: #059644 !important;
+  background-color: #d2f9b9;
+  padding: 2px 20px;
+  border-radius: 10px;
+  transition: background-color 0.25s linear;
+}
+.utilsa:hover {
+  background-color: #afee88;
 }

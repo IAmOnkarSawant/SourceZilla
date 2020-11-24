@@ -27,7 +27,7 @@ import Layout from '../Layout'
 import { postCreate, getPosts, postDelete, UpVote, DownVote, addresourcebox, reportPost, removeFromResourceBox } from '../../redux/actions/postsActions'
 import { profileDetails } from '../../redux/actions/profileAction'
 import store from '../../redux/store'
-import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat } from '../../utils/utils';
+import { replaceURLWithHTMLLinks, ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat } from '../../utils/utils';
 import FlipMove from 'react-flip-move'
 import LaunchIcon from '@material-ui/icons/Launch';
 import AttachmentIcon from '@material-ui/icons/Attachment';
@@ -277,9 +277,7 @@ function PostsBycategory(props) {
                                         />
                                         <CardContent>
                                             <Typography style={{ marginBottom: '20px' }} variant="body2" color="textSecondary" component="p">
-                                                <pre>
-                                                    {post.postContent.replace(/<br\s*\/?>/gi, ' ')}
-                                                </pre>
+                                                <pre style={{lineHeight : '28px'}} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
                                             </Typography>
                                             {ImageFormat?.includes(post?.fileContentType) && post?.fileName && (
                                                 <img

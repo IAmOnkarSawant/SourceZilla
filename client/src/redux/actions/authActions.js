@@ -14,7 +14,7 @@ export const registerUser = (user, history) => {
                 dispatch({
                     type: 'REGISTER_SUCCESS'
                 })
-                toast.dark('Register Successfully 🔐', options);
+                toast.dark('Thank you for being part a part of our community!', options);
             })
             .catch(err => {
                 dispatch({
@@ -33,20 +33,17 @@ export const loginUser = (user, history) => {
             .then(res => {
                 // console.log(res);
                 const { token } = res.data;
-                console.log(token)
+                // console.log(token)
                 localStorage.setItem('jwtToken', token)
                 setAuthToken(token);
                 const decoded = jwt_decode(token);
                 dispatch(setCurrentUser(decoded))
                 dispatch({
-                    type: 'LOGIN_SUCCESS',
-                    payload: {
-                        token: token
-                    }
+                    type: 'LOGIN_SUCCESS'
                 })
                 history.push('/categories/');
 
-                toast.dark("Login Successfully 🔓", options);
+                toast.dark(`Good to have you back ${decoded.userName}`, options);
             })
             .catch(err => {
                 dispatch({
@@ -76,6 +73,6 @@ export const logoutUser = (history) => {
             type: 'LOGOUT_SUCCESS'
         })
         history.push('/auth/login/');
-        toast.dark("Logout Successfully 🔐", options);
+        toast.dark(`We'll definitely miss you !`, options);
     }
 }

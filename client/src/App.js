@@ -74,13 +74,13 @@ class App extends Component {
 
             <ProtectedRoute exact path="/post/:postId/" component={PostIndividual} />
 
-            <ProtectedRoute exact path="/modal/:id/:pref/"><Modal isModal={isModal} /></ProtectedRoute>
+            <ProtectedRoute exact path="/modal/:groupName/:id/:pref/"><Modal isModal={isModal} /></ProtectedRoute>
 
             <Route path="*" component={() => <NotFoundPage message="UH.. PAGE NOT FOUND" />} />
           </Switch>
 
           {isModal
-            ? <ProtectedRoute exact path="/modal/:id/:pref/"><Modal isModal={isModal} /></ProtectedRoute>
+            ? <ProtectedRoute exact path="/modal/:groupName/:id/:pref/"><Modal isModal={isModal} /></ProtectedRoute>
             : null
           }
 

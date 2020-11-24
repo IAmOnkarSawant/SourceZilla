@@ -26,7 +26,8 @@ class Modal extends Component {
     e.preventDefault()
     const JoinData = {
       privateGroupId: this.props.match.params.id,
-      passCode: this.state.passCode
+      passCode: this.state.passCode,
+      groupName: this.props.match.params.groupName
     }
     this.props.joinPrivateGroup(JoinData, this.props.history)
     // this.forceUpdate()
@@ -65,7 +66,7 @@ class Modal extends Component {
                 disabled={!this.state.passCode}
                 onClick={this.handleSubmitPasscode}
               >
-                Join Group
+                Join
               </Button>
             </form>
           </div>
@@ -97,7 +98,7 @@ class Modal extends Component {
                 disabled={!this.state.passCode}
                 onClick={this.handleSubmitPasscode}
               >
-                Join Group
+                Join
               </Button>
             </form>
           </div>

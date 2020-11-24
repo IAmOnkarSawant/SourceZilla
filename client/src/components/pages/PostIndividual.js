@@ -28,7 +28,7 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { Box, Button, Container, Fab } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from "@material-ui/core/Divider";
-import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat } from '../../utils/utils';
+import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, replaceURLWithHTMLLinks } from '../../utils/utils';
 import moment from 'moment'
 import FlipMove from 'react-flip-move'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -179,9 +179,7 @@ function PostIndividual(props) {
                     />
                     <CardContent>
                         <Typography style={{ marginBottom: '20px' }} variant="body2" color="textSecondary" component="p">
-                            <pre>
-                                {props?.postIndividual?.postContent?.replace(/<br\s*\/?>/gi, ' ')}
-                            </pre>
+                            <pre dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(props?.postIndividual?.postContent?.replace(/<br\s*\/?>/gi, ' ')) }} />
                         </Typography>
                         {ImageFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
                             <ModalImage

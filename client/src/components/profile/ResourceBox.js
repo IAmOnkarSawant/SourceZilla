@@ -8,6 +8,7 @@ import moment from 'moment'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ProfileLoader from '../ProfileLoader'
+import { replaceURLWithHTMLLinks } from '../../utils/utils'
 
 function ResourceBox(props) {
 
@@ -35,9 +36,7 @@ function ResourceBox(props) {
                         <div className="resourceBox_content">
                             <span className="resourceBox_createdAt">{moment(resource.createdAt).fromNow()}</span>
                             <span className="resourceBox_postContent">
-                                <pre>
-                                    {resource.postContent.replace(/<br\s*\/?>/gi, ' ')}
-                                </pre>
+                            <pre style={{lineHeight : '28px'}} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(resource.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
                             </span>
                         </div>
                         <div className="resourceBox_buttons">

@@ -1,24 +1,29 @@
 .explore_btn {
-  border: 2px solid#05A54B !important;
-  color: black !important;
-  padding: 10px 40px !important;
+  background-image: linear-gradient(
+    to right,
+    rgb(7, 201, 94) 0%,
+    #059976 51%,
+    #1db853
+  );
+  margin-top: 20px !important;
+  padding: 12px 45px !important;
+  text-align: center;
+  font-size: 15px !important;
+  text-transform: uppercase;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
   border-radius: 30px !important;
-  margin-top: 25px !important;
-  cursor: pointer !important;
-  transition: background-color 0.25s linear !important ;
-}
-.explore_btn_signin {
-  background-color: #05a54b !important;
+  display: block;
   color: white !important;
-  padding: 10px 40px !important;
-  border-radius: 30px !important;
-  margin-top: 25px !important;
-  cursor: pointer !important;
-  transition: background-color 0.25s linear !important ;
+  transition: 0.5s !important;
 }
-.explore_btn_signin:hover {
-  background-color: #0d9247 !important;
+.explore_btn:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
 }
+
 
 .Explore_title {
   font-size: 45px;

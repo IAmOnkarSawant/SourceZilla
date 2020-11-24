@@ -79,9 +79,6 @@ function Categories(props) {
         if (e.target.value === 'oldest') {
             props.oldestCategories()
         }
-        if (e.target.value === '') {
-            props.getCategories()
-        }
     }
 
     if (props.loading === true) {
@@ -120,7 +117,6 @@ function Categories(props) {
                         <div className="upper_category_box_left">
                             <div class="select">
                                 <select name="sorting" id="sorting" onClick={handleSelectChange}>
-                                    <option value=" ">Select</option>
                                     <option value="">All</option>
                                     <option value="popular">Popular</option>
                                     <option value="latest">Latest</option>

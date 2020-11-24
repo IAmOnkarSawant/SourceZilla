@@ -83,9 +83,9 @@ function Navbar(props) {
                 <Toolbar className="navbar__toolbar">
                     <div className="navbar__left">
                         <img className="navbar__logo" src={bookLogo} width="50px" height="50px" alt="" />
-                        <p className="navbar__brand">
-                            BookaGram.com
-                        </p>
+                        <a href='/'  className="navbar__brand">
+                            SourceZilla
+                        </a>
                     </div>
                     <div className="navbar__middle">
                         {/* <SearchBar /> */}
