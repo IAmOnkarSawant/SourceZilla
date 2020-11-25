@@ -32,7 +32,7 @@ export const ProfileImages = [
         "imageURL": "https://i.ibb.co/z8qvDVh/PM.jpg"
     },
     {
-        "name": "Prathmesh Kurunkar",
+        "name": "Prathamesh Kurunkar",
         "imageURL": "https://i.ibb.co/2d8Yn1B/PK.jpg"
     }
 ]
