@@ -65,7 +65,7 @@ class App extends Component {
             {/* //protected routes */}
 
             <ProtectedRoute exact path="/categories/" component={Categories} />
-            <ProtectedRoute exact path="/category/:categoryName/:categoryId/" component={PostsBycategory} />
+            <ProtectedRoute exact path="/categories/:categoryName/:categoryId/" component={PostsBycategory} />
 
             <ProtectedRoute exact path="/groups/" component={PrivateGroups} />
             <ProtectedRoute exact path="/groups/:groupName/:groupId/" component={privateGroupsById} />

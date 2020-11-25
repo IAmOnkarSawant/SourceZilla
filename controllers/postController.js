@@ -380,7 +380,7 @@ router.patch('/edit', [check('postContent').isLength({ min: 4 })], authenticate,
         return next(error);
     }
 
-    if (!(post.postBy.toString() === userId)) {
+    if ((post.postBy.toString() !== userId)) {
         const error = new HttpError('You are not authorized to edit this post.', 403);
         return next(error);
     }

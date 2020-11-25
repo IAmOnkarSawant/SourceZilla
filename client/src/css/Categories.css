@@ -203,58 +203,11 @@
   padding-bottom: 20px;
 }
 
-/* Reset Select */
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  outline: 0;
-  box-shadow: none;
-  border: 0 !important;
-  border: 1px solid #1db853 !important;
-  background: #f5f3f3;
-  background-image: none;
+
+.MuiNativeSelect-root{
+  padding: 10px 40px !important;
 }
-/* Remove IE arrow */
-select::-ms-expand {
-  display: none;
-}
-/* Custom Select */
-.select {
-  position: relative;
-  display: flex;
-  width: 20em;
-  height: 2.5em;
-  line-height: 2.3;
-  background: #f9f9fa;
-  overflow: hidden;
-  border-radius: 0em;
-  margin-top: 20px;
-}
-select {
-  flex: 1;
-  padding: 0 0.5em;
-  color: black;
-  cursor: pointer;
-  border: 1px solid #b6b6b6 !important;
-}
-/* Arrow */
-.select::after {
-  content: "\25BC";
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0.6px 1em;
-  background: #f0efef;
-  border: 1px solid #b6b6b6 !important;
-  cursor: pointer;
-  pointer-events: none;
-  -webkit-transition: 0.25s all ease;
-  -o-transition: 0.25s all ease;
-  transition: 0.25s all ease;
-}
-/* Transition */
-.select:hover::after {
-  color: #b6b6b6;
+.MuiNativeSelect-select{
+  display: flex !important;
+  flex-direction: column !important;
 }

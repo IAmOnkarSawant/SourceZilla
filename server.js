@@ -6,6 +6,7 @@ const path = require('path')
 const morgan = require('morgan')
 const compression = require('compression')
 const DYNO_URL = 'https://dbms-mern-stack-app.herokuapp.com/'
+const favicon = require('serve-favicon')
 const wokeUp = require('./wake-up-dyno')
 
 
@@ -22,6 +23,8 @@ const { deleteFile, upload } = require('./models/db');
 
 // Init
 const app = express();
+
+app.use(favicon(path.join(__dirname, 'client', 'public', 'favicon.ico')))
 
 app.use(compression());
 

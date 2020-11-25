@@ -70,6 +70,14 @@ const postreducer = (state = initialState, action) => {
                     ...state.posts,
                 ]
             }
+        case 'POST_EDIT':
+            return {
+                ...state,
+                postIndividual: {
+                    ...state.postIndividual,
+                    postContent: action.payload.postContent
+                }
+            }
         case 'POST_DELETE':
             return {
                 ...state,
@@ -266,6 +274,13 @@ const postreducer = (state = initialState, action) => {
             return {
                 ...state,
                 percentage: action.payload
+            }
+        case 'ALREADY_EXISTED_POST':
+            return {
+                ...state,
+                categories: [
+                    action.payload.existedCategory,
+                ]
             }
         default:
             return state;

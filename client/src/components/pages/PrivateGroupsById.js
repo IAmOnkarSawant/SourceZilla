@@ -26,7 +26,7 @@ import { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import Layout from '../Layout'
-import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, replaceURLWithHTMLLinks } from '../../utils/utils';
+import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, replaceURLWithHTMLLinks, capitalizeFirstLetter } from '../../utils/utils';
 import FlipMove from 'react-flip-move'
 import store from '../../redux/store'
 import AttachmentIcon from '@material-ui/icons/Attachment';
@@ -36,7 +36,6 @@ import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined'
 import ReactPlayer from 'react-player/lazy'
 import ReactAudioPlayer from 'react-audio-player';
 import { Progress } from 'react-sweet-progress'
-import nl2br from 'nl2br';
 import ScrollToTop from 'react-scroll-up'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import Loader from '../Loader';
@@ -99,7 +98,7 @@ function PostsBycategory(props) {
 
         var formData = new FormData();
 
-        formData.append('postContent', nl2br(data.postContent))
+        formData.append('postContent', data.postContent)
         formData.append('categoryId', data.categoryId)
         formData.append('file', file)
 
@@ -152,7 +151,7 @@ function PostsBycategory(props) {
                         <span style={{ marginLeft: '10px' }} >Leave Group</span>
                     </Fab>
                     <p>
-                        {props.match.params.groupName}
+                        {capitalizeFirstLetter(props.match.params.groupName)}
                     </p>
                     <div htmlFor="toggle-1">
                         <Toggle

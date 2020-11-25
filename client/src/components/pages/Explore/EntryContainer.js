@@ -15,7 +15,7 @@ function EntryContainer(props) {
             <p className="Explore_title">
                 Welcome To SourceZilla
             </p>
-            <p style={{maxWidth : '500px',color : 'grey',fontSize : '18px'}}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam, velit cum nemo quas, ea minima vel quidem doloremque minus vitae id natus repudiandae mollitia temporibus officia cumque cupiditate ipsa hic!</p>
+            <p style={{maxWidth : '500px',color : 'grey',fontSize : '18px'}}>A resource sharing platform for keen learner's around the globe.</p>
             <Button onClick={() => setIsClicked(true)} className="explore_btn">
                 Explore
             </Button>

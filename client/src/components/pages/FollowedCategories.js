@@ -12,6 +12,7 @@ import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
 import FlagIcon from '@material-ui/icons/Flag';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import Loader from '../Loader'
+import { capitalizeFirstLetter } from '../../utils/utils'
 
 function Categories(props) {
 
@@ -51,8 +52,8 @@ function Categories(props) {
                                 category.spamFlag === false &&
                                 <div key={index} className="content" >
                                     <div className="overlay">
-                                        <Link to={`/category/${category.categoryName}/${category._id}/`}>
-                                            <button className="Stylishbtn style">{category.categoryName}</button>
+                                        <Link to={`/categories/${category.categoryName}/${category._id}/`}>
+                                            <button className="Stylishbtn style">{capitalizeFirstLetter(category.categoryName)}</button>
                                         </Link>
                                         <div className="followers_length">
                                             <PeopleAltOutlinedIcon className="people_icon" />

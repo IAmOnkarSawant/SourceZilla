@@ -41,7 +41,7 @@ export default function SpamCategoriesTable({ spamCategories, setSpamCategories 
         Axios.delete(`/admin/deletecategory/${categoryId}`)
             .then(({ data: { message } }) => {
                 console.log('Spam Category Removed Successfully')
-                toast.dark('👦' + message, AdminOptions)
+                toast.dark(message, AdminOptions)
             })
             .catch(error => {
                 console.log(error.response.data)
@@ -54,7 +54,7 @@ export default function SpamCategoriesTable({ spamCategories, setSpamCategories 
         Axios.patch(`/admin/revivecategory/`, { categoryId })
             .then(({ data: { message } }) => {
                 console.log('Category Removed Successfully')
-                toast.dark('👦' + message, AdminOptions)
+                toast.dark(message, AdminOptions)
             })
             .catch(error => {
                 console.log(error.response.data)

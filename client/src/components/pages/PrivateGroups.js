@@ -18,6 +18,9 @@ import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import SendIcon from '@material-ui/icons/Send';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Loader from '../Loader'
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ScrollToTop from 'react-scroll-up'
+import { capitalizeFirstLetter } from '../../utils/utils'
 
 const useStyles = makeStyles((theme) => ({
     extendedIcon: {
@@ -58,7 +61,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
     const handleCreateGroup = (e) => {
         e.preventDefault()
 
-        createprivateGroup(groupName)
+        createprivateGroup(groupName.toLowerCase())
         setgroupName('')
     }
 
@@ -80,7 +83,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                 type="text"
                                 name="groupName"
                                 value={groupName}
-                                placeholder={`What's on your mind, ${auth.user.userName} ?`}
+                                placeholder={`Want to create group ?, ${auth.user.userName} ?`}
                                 className="create__input"
                             />
                             <IconButton disabled={!groupName} style={{ backgroundColor: 'white' }} type="submit" size="small" className="" >
@@ -97,7 +100,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                     <div key={index} className="content" >
                                         <div className="overlay">
                                             <Link to={`/groups/${group.groupName}/${group._id}/`}>
-                                                <button className="Stylishbtn style">{group.groupName}</button>
+                                                <button className="Stylishbtn style">{capitalizeFirstLetter(group.groupName)}</button>
                                             </Link>
                                             <p style={{ color: 'grey', letterSpacing: '1px', paddingBottom: '10px', fontFamily: 'sans-serif' }}>
                                                 {group.groupAdmin}
@@ -160,6 +163,24 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                 </div>
                 {copied ? <span className="copy_message">copied</span> : null}
             </Dialog>
+            <ScrollToTop
+                style={{
+                    position: 'fixed',
+                    bottom: 20,
+                    right: 20,
+                    cursor: 'pointer',
+                    transitionDuration: '0.2s',
+                    transitionTimingFunction: 'linear',
+                    transitionDelay: '0s',
+                    backgroundColor: '#04A44B',
+                    borderRadius: '50%'
+                }}
+                showUnder={160}
+            >
+                <IconButton>
+                    <ArrowUpwardIcon style={{ color: 'white' }} />
+                </IconButton>
+            </ScrollToTop>
         </Layout>
     )
 }

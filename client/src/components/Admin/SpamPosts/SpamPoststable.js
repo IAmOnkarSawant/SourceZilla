@@ -41,7 +41,7 @@ export default function SpamPoststable({ spamPosts, setSpamPosts }) {
         Axios.delete(`/admin/deletepost/${postId}`)
             .then(({ data: { message } }) => {
                 console.log('Spam Post Removed Successfully')
-                toast.dark('👦' + message, AdminOptions)
+                toast.dark(message, AdminOptions)
             })
             .catch(error => {
                 console.log(error.response.data)
@@ -54,7 +54,7 @@ export default function SpamPoststable({ spamPosts, setSpamPosts }) {
         Axios.patch(`/admin/revivepost/`, { postId })
             .then(({ data: { message } }) => {
                 console.log('Category Removed Successfully')
-                toast.dark('👦' + message, AdminOptions)
+                toast.dark(message, AdminOptions)
             })
             .catch(error => {
                 console.log(error.response.data)
@@ -82,7 +82,7 @@ export default function SpamPoststable({ spamPosts, setSpamPosts }) {
                                 {post._id}
                             </StyledTableCell>
                             <StyledTableCell align="left">{moment(post.createdAt).format('LL')}</StyledTableCell>
-                            <StyledTableCell align="left">{post.postContent.replace(/<br\s*\/?>/gi, ' ').substr(0,80) + '...'}</StyledTableCell>
+                            <StyledTableCell align="left">{post.postContent.replace(/<br\s*\/?>/gi, ' ').substr(0, 80) + '...'}</StyledTableCell>
                             <StyledTableCell align="left">{post.accessibilty}</StyledTableCell>
                             <StyledTableCell align="left">
                                 <Fab className="fab" size="small" onClick={() => handleDelete(post._id)} color="secondary" aria-label="delete" >

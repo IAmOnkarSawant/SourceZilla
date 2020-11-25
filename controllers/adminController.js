@@ -66,7 +66,10 @@ router.delete('/deletepost/:postId', authenticate, restricted, async (req, res, 
         return next(error);
     }
 
-    deleteFile(next, spampost.uploads)
+
+    if (spampost.uploads) {
+        deleteFile(next, spampost.uploads)
+    }
 
     try {
         await User.findByIdAndUpdate(spampost.postBy, { $pull: { myPosts: spampost._id } });
@@ -92,7 +95,7 @@ router.delete('/deletepost/:postId', authenticate, restricted, async (req, res, 
         }
     }
 
-    res.status(200).json({ 'message': 'All deletions successful' });
+    res.status(200).json({ 'message': 'Post is deleted successfully' });
 });
 
 router.patch('/revivecategory', authenticate, restricted, async (req, res, next) => {

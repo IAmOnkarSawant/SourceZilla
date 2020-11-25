@@ -80,6 +80,19 @@ export const createCategory = (cat) => {
                     type: 'GET_ERRORS',
                     payload: error
                 });
+                if (error.response.status === 400 && error.response.data.message === "The category you are trying to create exists already.Please consider following it instead.") {
+                    dispatch({
+                        type: 'LOADING',
+                        payload: false
+                    })
+                    dispatch({
+                        type : 'ALREADY_EXISTED_POST',
+                        payload : {
+                            existedCategory : error.response.data.category
+                        }
+                    })
+                }
+                toast.error(error.response.data.message, AdminOptions)
                 console.log(error.response.data.message)
             })
     }
@@ -191,6 +204,29 @@ export const postCreate = (data) => {
                     payload: error.response.data
                 });
                 console.log(error.response.data)
+            })
+    }
+}
+
+export const editPostContent = (postId, postContent) => {
+    return (dispatch) => {
+        Axios.patch(`/posts/edit/`, { postId, postContent })
+            .then(({ data }) => {
+                dispatch({
+                    type: 'POST_EDIT',
+                    payload: {
+                        postContent
+                    }
+                })
+                console.log(data);
+            })
+            .catch(error => {
+                dispatch({
+                    type: 'GET_ERRORS',
+                    payload: error.response.data
+                });
+                console.log(error.response.data)
+                toast.error(error.response.data.message, AdminOptions)
             })
     }
 }

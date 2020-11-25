@@ -74,3 +74,55 @@
 .MuiFormLabel-root.Mui-focused {
   color: #0aa94b !important;
 }
+
+.postInd_btnss_right {
+  margin: 3px 16px 0 0;
+}
+.postInd_btnss_right > * {
+  padding-right: 12px !important;
+  transform: scale(1.2);
+}
+
+.postInd_textarea {
+  width: 100%;
+  height: 300px;
+  border: 3px solid #cccccc;
+  font-family: Tahoma, sans-serif;
+  border-radius: 15px !important;
+  padding: 10px;
+}
+.postInd_textarea:focus {
+  outline: 0;
+}
+.postInd_form {
+  padding: 20px;
+}
+.postInd_submit_btn {
+  border: 0;
+  background-image: linear-gradient(
+    to right,
+    rgb(4, 167, 77) 0%,
+    #04795d 51%,
+    #1db853
+  );
+  background-size: 200% auto;
+  box-shadow: 0 0 20px #eee;
+  transition: 0.5s !important;
+  outline: none;
+  padding: 12px 40px;
+  color: white;
+  border-radius: 25px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.postInd_submit_btn:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}

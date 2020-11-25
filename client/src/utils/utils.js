@@ -20,8 +20,9 @@ export const AdminOptions = {
     progress: undefined,
 }
 
-
-// console.log(localStorage.getItem('jwtToken'))
+export const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
 
 export const stringMinimizer = (str, len) => {
     return str.length > len ? str.substr(0, 45) + '...' : str
@@ -30,6 +31,11 @@ export const stringMinimizer = (str, len) => {
 export const replaceURLWithHTMLLinks = (text) => {
     var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;   //eslint-disable-line
     return text?.replace(exp, "<a class='utilsa' href='$1' target='_blank'>$1</a>");
+}
+
+export const replaceURLWithHTMLLinksForComments = (text) => {
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;   //eslint-disable-line
+    return text?.replace(exp, "<a href='$1' class='utilsa_comment' target='_blank'>$1</a>");
 }
 
 export const ImageFormat = [

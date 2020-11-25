@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { NavLink, withRouter } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
-import bookLogo from '../Images/book.png'
+import bookLogo from '../Images/favicon.png'
 import { connect } from 'react-redux';
 import { logoutUser } from '../redux/actions/authActions'
 
@@ -82,9 +82,9 @@ function Navbar(props) {
             <AppBar className={`${props.scrollClass === true ? "scrollable_navbar" : "navbar__strip"}`}>
                 <Toolbar className="navbar__toolbar">
                     <div className="navbar__left">
-                        <img className="navbar__logo" src={bookLogo} width="50px" height="50px" alt="" />
+                        <img className="navbar__logo" src={bookLogo} width="30px" height="30px" alt="" />
                         <a href='/'  className="navbar__brand">
-                            SourceZilla
+                            Source<span style={{color :'#04A54C',fontWeight : '900',fontSize : '30px'}}>Zilla</span> 
                         </a>
                     </div>
                     <div className="navbar__middle">

@@ -1,3 +1,9 @@
+@media (max-width: 1020px) {
+  .myprofile {
+    flex-direction: column;
+  }
+}
+
 .myprofile {
   display: flex !important;
   justify-content: space-between !important;
@@ -8,7 +14,7 @@
   margin-top: 26px !important;
   background-color: rgb(255, 255, 255);
   height: 100%;
-  border: .7px solid lightgray !important;
+  border: 0.7px solid lightgray !important;
 }
 .profile__tabs {
   flex: 0.75;
@@ -33,7 +39,6 @@
   padding: 10px;
   margin: 0 0 10px 0;
   font-family: monospace;
-  font-size: 1.05vw;
   cursor: pointer;
 }
 .follo__info span {
@@ -348,4 +353,10 @@
   color: #50abf1 !important;
 }
 
-
+.myposts_pre {
+  overflow-x: auto !important;
+  white-space: pre-wrap !important;
+  white-space: -moz-pre-wrap !important;
+  white-space: -pre-wrap !important;
+  white-space: -o-pre-wrap !important;
+}

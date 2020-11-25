@@ -38,7 +38,7 @@ function Myposts(props) {
                         <div className="my_post_content">
                             <span className="my_post_createdAt">{moment(post.createdAt).fromNow()}</span>
                             <span className="my_post_postContent">
-                            <pre style={{lineHeight : '28px'}} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
+                                <pre className="myposts_pre" style={{ lineHeight: '28px' }} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
                             </span>
                         </div>
                         <span className="my_post_accessibilty" >  {post.accessibilty === 'private' ? <LockOpenIcon /> : <PublicIcon />}</span>

@@ -28,14 +28,19 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { Box, Button, Container, Fab } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from "@material-ui/core/Divider";
-import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, replaceURLWithHTMLLinks } from '../../utils/utils';
+import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, replaceURLWithHTMLLinks, replaceURLWithHTMLLinksForComments } from '../../utils/utils';
 import moment from 'moment'
 import FlipMove from 'react-flip-move'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ModalImage from "react-modal-image";
 import ReactPlayer from 'react-player'
 import ReactAudioPlayer from 'react-audio-player';
+import EditIcon from '@material-ui/icons/Edit';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PublicIcon from '@material-ui/icons/Public';
 import Loader from '../Loader'
+import Drawer from './Drawer'
+import { useCallback } from 'react'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -80,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
 function PostIndividual(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
+
+    const [edit, setEdit] = useState(false)
+    const [editId, setEditId] = useState('')
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -137,6 +145,11 @@ function PostIndividual(props) {
         props.removeFromResourceBox(id)
     }
 
+    const handleEdit = useCallback((id) => {
+        setEdit(state => !state)
+        setEditId(id)
+    }, [setEditId, setEdit])
+
     if (props.loading === true) {
         return (
             <Loader />
@@ -157,14 +170,24 @@ function PostIndividual(props) {
                             />
                         }
                         action={
-                            <div>
+                            <div className="postInd_btnss_right">
+                                {props.auth.isAuthenticated && props.auth.user.userId === props.postIndividual.postBy ? (
+                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleEdit(props.postIndividual._id)}  >
+                                        <EditIcon />
+                                    </IconButton>
+                                ) : (
+                                        <IconButton disabled disableFocusRipple={true} disableRipple={true}>
+                                            <EditIcon />
+                                        </IconButton>
+                                    )
+                                }
                                 {props.postIndividual.accessibilty === 'public' ? (
                                     props?.details?.resourceBox?.includes(props?.match?.params?.postId) ? (
-                                        <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A', margin: '15px 20px 0 0' }} onClick={() => RemoveResourceFromIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
+                                        <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#05A54B' }} onClick={() => RemoveResourceFromIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
                                             <BookmarkIcon />
                                         </IconButton>
                                     ) : (
-                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A', margin: '15px 20px 0 0' }} onClick={() => addResourceToIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
+                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#05A54B' }} onClick={() => addResourceToIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
                                                 <BookmarkBorderOutlinedIcon />
                                             </IconButton>
                                         )
@@ -172,6 +195,15 @@ function PostIndividual(props) {
                                         null
                                     )
                                 }
+                                {props.postIndividual.accessibilty === "private" ? (
+                                    <IconButton disabled disableFocusRipple={true} disableRipple={true}>
+                                        <LockOpenIcon />
+                                    </IconButton>
+                                ) : (
+                                        <IconButton disabled disableFocusRipple={true} disableRipple={true}>
+                                            <PublicIcon />
+                                        </IconButton>
+                                    )}
                             </div>
                         }
                         title={props.postIndividual.postByUserName}
@@ -316,9 +348,7 @@ function PostIndividual(props) {
                                                         <span className="commentBy">
                                                             {comment.commentBy}
                                                         </span>
-                                                        <span className="commentBody">
-                                                            {comment.commentBody}
-                                                        </span>
+                                                        <span dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinksForComments(comment.commentBody) }} className="commentBody" />
                                                         <span className="commentCreatedAt">
                                                             {moment(comment.commentCreatedAt).fromNow()}
                                                         </span>
@@ -350,6 +380,16 @@ function PostIndividual(props) {
             >
                 <ArrowBackIcon />
             </Fab>
+
+            {
+                edit && (
+                    <Drawer
+                        edit={edit}
+                        setEdit={setEdit}
+                        editId={editId}
+                    />
+                )
+            }
         </Layout>
     )
 }

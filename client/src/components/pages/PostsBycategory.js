@@ -27,7 +27,7 @@ import Layout from '../Layout'
 import { postCreate, getPosts, postDelete, UpVote, DownVote, addresourcebox, reportPost, removeFromResourceBox } from '../../redux/actions/postsActions'
 import { profileDetails } from '../../redux/actions/profileAction'
 import store from '../../redux/store'
-import { replaceURLWithHTMLLinks, ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat } from '../../utils/utils';
+import { replaceURLWithHTMLLinks, ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, capitalizeFirstLetter } from '../../utils/utils';
 import FlipMove from 'react-flip-move'
 import LaunchIcon from '@material-ui/icons/Launch';
 import AttachmentIcon from '@material-ui/icons/Attachment';
@@ -37,7 +37,6 @@ import ReactPlayer from 'react-player/lazy'
 import ReactAudioPlayer from 'react-audio-player';
 import "react-sweet-progress/lib/style.css";
 import { Progress } from 'react-sweet-progress'
-import nl2br from 'nl2br'
 import ScrollToTop from 'react-scroll-up'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import Loader from '../Loader';
@@ -69,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
 function PostsBycategory(props) {
     const classes = useStyles();
     // console.log(props.match.params.categoryId)
+    
+
     const [toggle, setToggle] = useState(true)
     const [postContent, setpostContent] = useState('')
     const [file, setFile] = useState('')
@@ -76,7 +77,7 @@ function PostsBycategory(props) {
     const { getPosts, profileDetails, match: { params: { categoryId } } } = props
     useEffect(() => {
         getPosts(categoryId)   //get posts by categoryId
-        profileDetails()                         //ger user details 🍕
+        profileDetails()                         //get user details 🍕
 
         store.dispatch({ type: 'CLEAR_INDIVIDUAL_POST' })
         store.dispatch({ type: 'CLEAN_COMMENTS' })     //clean comments state everytime when this component mount !
@@ -91,7 +92,7 @@ function PostsBycategory(props) {
 
         var formData = new FormData();
 
-        formData.append('postContent', nl2br(data.postContent))
+        formData.append('postContent', data.postContent)
         formData.append('categoryId', data.categoryId)
         formData.append('file', file)
 
@@ -130,6 +131,8 @@ function PostsBycategory(props) {
         props.reportPost(id, props.auth.user.userId)
     }
 
+    
+
     const EnterticketNotVisibleState = {
         opacity: 0.1
     };
@@ -148,7 +151,7 @@ function PostsBycategory(props) {
             <Container maxWidth="lg" >
                 <div className="imp_information">
                     <p>
-                        {props.match.params.categoryName}
+                        {capitalizeFirstLetter(props.match.params.categoryName)}
                     </p>
                     <div htmlFor="toggle-1">
                         <Toggle
@@ -234,6 +237,7 @@ function PostsBycategory(props) {
                                             }
                                             action={
                                                 <div className="post_right_buttons">
+                                                    
                                                     {
                                                         props.auth.user.userId === post.postByUserId ? (
                                                             <IconButton disableFocusRipple={true} disableRipple={true} className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained"  >
@@ -277,7 +281,7 @@ function PostsBycategory(props) {
                                         />
                                         <CardContent>
                                             <Typography style={{ marginBottom: '20px' }} variant="body2" color="textSecondary" component="p">
-                                                <pre style={{lineHeight : '28px'}} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
+                                                <pre style={{ lineHeight: '28px' }} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
                                             </Typography>
                                             {ImageFormat?.includes(post?.fileContentType) && post?.fileName && (
                                                 <img
@@ -396,6 +400,7 @@ function PostsBycategory(props) {
                     <ArrowUpwardIcon style={{ color: 'white' }} />
                 </IconButton>
             </ScrollToTop>
+            
         </Layout>
     )
 }

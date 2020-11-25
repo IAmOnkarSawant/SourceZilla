@@ -24,6 +24,8 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ScrollToTop from 'react-scroll-up';
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -305,6 +307,24 @@ function MyProfile(props) {
                     </TabPanel>
                 </div>
             </div>
+            <ScrollToTop
+                style={{
+                    position: 'fixed',
+                    bottom: 20,
+                    right: 20,
+                    cursor: 'pointer',
+                    transitionDuration: '0.2s',
+                    transitionTimingFunction: 'linear',
+                    transitionDelay: '0s',
+                    backgroundColor: '#04A44B',
+                    borderRadius: '50%'
+                }}
+                showUnder={160}
+            >
+                <IconButton>
+                    <ArrowUpwardIcon style={{ color: 'white' }} />
+                </IconButton>
+            </ScrollToTop>
         </Layout>
     )
 }
