@@ -101,6 +101,7 @@ export const changeUsername = (newUserName) => {
             })
             .catch(error => {
                 console.log(error.response.data)
+                toast.error(error.response.data.message,AdminOptions)
             })
     }
 }
@@ -121,6 +122,7 @@ export const changeDpOfUser = (file) => {
             })
             .catch(error => {
                 console.log(error.response.data)
+                toast.error(error.response.data.message,AdminOptions)
             })
     }
 }
@@ -156,6 +158,7 @@ export const changeGithub = (github) => {
             })
             .catch(error => {
                 console.log(error.response.data)
+                toast.error(error.response.data.message,AdminOptions)
             })
     }
 }
@@ -174,6 +177,7 @@ export const changeLinkedIn = (linkedIn) => {
             })
             .catch(error => {
                 console.log(error.response.data)
+                toast.error(error.response.data.message,AdminOptions)
             })
     }
 }
@@ -192,6 +196,7 @@ export const changeTwitter = (twitter) => {
             })
             .catch(error => {
                 console.log(error.response.data)
+                toast.error(error.response.data.message,AdminOptions)
             })
     }
 }

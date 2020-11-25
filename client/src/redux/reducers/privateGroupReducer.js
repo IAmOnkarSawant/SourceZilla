@@ -1,7 +1,8 @@
 const initialState = {
     groups: [],
     groupsIndividualPosts: [],
-    passcode: ''
+    passcode: '',
+    groupAdmin: ''
 }
 
 const privategroupreducer = (state = initialState, action) => {
@@ -23,7 +24,8 @@ const privategroupreducer = (state = initialState, action) => {
         case 'GET_PRIVATE_POSTS_BY_GROUP_ID':
             return {
                 ...state,
-                groupsIndividualPosts: action.payload
+                groupsIndividualPosts: action.payload,
+                groupAdmin: action.groupAdmin
             }
         case 'CLEAR_INDIVIDUAL_POSTS':
             return {

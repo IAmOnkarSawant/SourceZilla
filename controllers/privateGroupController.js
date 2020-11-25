@@ -123,11 +123,12 @@ router.get('/view/:privateGroupId', authenticate, async (req, res, next) => {
     const outgroup = {
         "_id": group._id,
         "groupName": group.groupName,
+        "groupAdmin": group.groupAdmin,
         "members": group.members.length,
         "posts": updatedPosts
     }
 
-    res.status(200).json({ groupsPosts: outgroup.posts });
+    res.status(200).json({ groupsPosts: outgroup.posts, groupAdmin: outgroup.groupAdmin, groupName: outgroup.groupName, members: outgroup.members });
 
 });
 

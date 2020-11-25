@@ -145,6 +145,9 @@ function PostsBycategory(props) {
     return (
         <Layout>
             <Container maxWidth="lg" >
+                {props.groupAdmin === props.auth.user.userId && (
+                    <p className="groupAdmin_name">Group Admin</p>
+                )}
                 <div className="imp_private-info">
                     <Fab className={classes.leave_button + ' leave_group_icon'} size="medium" color="secondary" variant="extended" onClick={() => handleLeaveGroup(props.match.params.groupId)}>
                         <ExitToAppIcon className={classes.extendedIcon} />
@@ -389,6 +392,7 @@ function PostsBycategory(props) {
 const mapStateToProps = (state) => {
     return {
         groupsIndividualPosts: state.groups.groupsIndividualPosts,
+        groupAdmin: state.groups.groupAdmin,
         errors: state.errors.Errors,
         auth: state.auth,
         loading: state.loading.loading,

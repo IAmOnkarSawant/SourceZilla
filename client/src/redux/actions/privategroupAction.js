@@ -81,16 +81,18 @@ export const getprivateGroupPostsById = (privateGroupId) => {            //
             payload: true
         })
         Axios.get(`/privategroup/view/${privateGroupId}/`)
-            .then(({ data: { groupsPosts } }) => {
+            .then(({ data }) => {
                 dispatch({
                     type: 'GET_PRIVATE_POSTS_BY_GROUP_ID',
-                    payload: groupsPosts.reverse()
+                    payload: data.groupsPosts.reverse(),
+                    groupAdmin: data.groupAdmin
                 })
                 dispatch({
                     type: 'LOADING',
                     payload: false
                 })
-                console.log(groupsPosts)
+                console.log(data.groupAdmin)
+                console.log(data)
             })
             .catch(err => {
                 dispatch({

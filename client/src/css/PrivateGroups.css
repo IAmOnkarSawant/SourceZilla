@@ -104,3 +104,11 @@
   font-weight: 600;
   font-size: 40px;
 }
+
+.groupAdmin_name{
+  font-size: 22px;
+  color: rgb(99, 99, 99);
+  margin-top: 10px;
+  font-weight: 600;
+  font-family: sans-serif !important;
+}
