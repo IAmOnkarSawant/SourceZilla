@@ -162,7 +162,6 @@ router.get('/getposts/:categoryId', async (req, res, next) => {
 
         }
         post.postBy = user.userName;
-
         return post;
 
     }))

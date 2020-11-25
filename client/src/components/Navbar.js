@@ -79,7 +79,7 @@ function Navbar(props) {
 
     return (
         <div className="navbar">
-            <AppBar className={`${props.scrollClass === true ? "scrollable_navbar" : "navbar__strip"}`}>
+            <AppBar  className={`${props.scrollClass === true ? "scrollable_navbar" : "navbar__strip"}`}>
                 <Toolbar className="navbar__toolbar">
                     <div className="navbar__left">
                         <img className="navbar__logo" src={bookLogo} width="30px" height="30px" alt="" />

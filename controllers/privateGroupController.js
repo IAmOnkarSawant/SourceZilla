@@ -105,7 +105,7 @@ router.get('/view/:privateGroupId', authenticate, async (req, res, next) => {
 
         let profileImage;
         try {
-            user = await User.findById(post.postByUserId);
+            var user = await User.findById(post.postByUserId);
         } catch (err) {
             const error = new HttpError('Unable to perform your operation', 500);
             return next(error);

@@ -62,8 +62,8 @@
   color: white;
 }
 
-@media (max-width: 890px){
-  .navbar__link{
+@media (max-width: 890px) {
+  .navbar__link {
     padding: 6px 15px !important;
     margin-right: 5px !important;
   }

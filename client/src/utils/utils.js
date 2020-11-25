@@ -77,7 +77,8 @@ export const AudioAllFormat = [
     'audio/ogg',
     'audio/opus',
     'audio/wav',
-    'audio/webm'
+    'audio/webm',
+    "audio/vnd.dlna.adts"
 ]
 
 export const VideoFormat = [
