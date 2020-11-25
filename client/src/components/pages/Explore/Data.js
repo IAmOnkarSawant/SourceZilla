@@ -20,11 +20,11 @@ export const Why = "<p>Want to add another feather into you hat of skills?Want t
 
 export const ProfileImages = [
     {
-        "name": "Omkar Sawant",
+        "name": "Onkar Sawant",
         "imageURL": "https://i.ibb.co/k2M9wTg/OS.jpg"
     },
     {
-        "name": "Nikhil Varghise",
+        "name": "Nikhil Varghese",
         "imageURL": "https://i.ibb.co/4s5vM9q/NV.jpg"
     },
     {
