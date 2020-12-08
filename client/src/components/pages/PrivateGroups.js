@@ -112,7 +112,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                         </div>
                                         <div className="Join_group_buttton">
                                             {!details?.myPrivateGroups?.includes(group._id) ? (
-                                                <Button className="join_group_button" fullWidth size="small" variant="contained">
+                                                <Button fullWidth className="follow_btn" size="small" variant="contained">
                                                     <Link style={{ padding: '0px 60px', color: 'white' }}
                                                         to={{
                                                             pathname: `/modal/${group.groupName}/${group._id}/join/`,
@@ -123,7 +123,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                                     </Link>
                                                 </Button>
                                             ) : (
-                                                    <Button fullWidth disabled size="small" variant="contained">
+                                                    <Button fullWidth style={{borderRadius : '30px'}} disabled size="small" variant="contained">
                                                         <Link style={{ padding: '0px 60px', color: 'black' }}
                                                             to={{
                                                                 pathname: `/modal/${group.groupName}/${group._id}/join/`,

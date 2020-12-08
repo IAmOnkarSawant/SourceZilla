@@ -19,7 +19,7 @@ import store from '../../redux/store'
 import Loader from '../Loader'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ScrollToTop from 'react-scroll-up'
-import { capitalizeFirstLetter } from '../../utils/utils'
+import { capitalizeFirstLetter } from '../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
     extendedIcon: {
