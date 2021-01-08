@@ -6,14 +6,21 @@ const IsAdmin = ({ component: Component, auth, details, ...rest }) => (
     <Route
         {...rest}
         render={props =>
-            auth.isAuthenticated === true ? (
+            auth.isAuthenticated ? (
                 auth.user.role === "Admin" ? (
                     <Component {...props} />
                 ) : (
-                        <Redirect to="/categories/"/>
+                        <Redirect to="/categories/" />
                     )
             ) : (
-                    <Redirect to="/auth/login/" />
+                    <Redirect
+                        to={{
+                            pathname: '/auth/login/',
+                            state: {
+                                from: props.location
+                            }
+                        }}
+                    />
                 )
         }
     />
