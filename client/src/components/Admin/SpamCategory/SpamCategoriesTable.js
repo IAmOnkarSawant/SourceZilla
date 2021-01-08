@@ -40,14 +40,14 @@ export default function SpamCategoriesTable({ spamCategories, setSpamCategories 
     const handleDelete = (categoryId) => {
         Axios.delete(`/admin/deletecategory/${categoryId}`)
             .then(({ data: { message } }) => {
+                const categoryNew = spamCategories.filter(category => category._id !== categoryId)
+                setSpamCategories(categoryNew)
                 console.log('Spam Category Removed Successfully')
                 toast.dark(message, AdminOptions)
             })
             .catch(error => {
                 console.log(error.response.data)
             })
-        const categoryNew = spamCategories.filter(category => category._id !== categoryId)
-        setSpamCategories(categoryNew)
     }
 
     const handleUnmarkSpamPost = (categoryId) => {

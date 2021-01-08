@@ -38,14 +38,14 @@ export default function UsersTable({ users, setUsers }) {
     const handleDelete = (id) => {
         Axios.delete(`/register/deleteuser/${id}`)
             .then(({ data: { msg } }) => {
+                const usersNew = users.filter(user => user._id !== id)
+                setUsers(usersNew)
                 console.log('User Removed Successfully')
                 toast.dark('👦' + msg, AdminOptions)
             })
             .catch(error => {
                 console.log(error.response.data)
             })
-        const usersNew = users.filter(user => user._id !== id)
-        setUsers(usersNew)
     }
 
     return (

@@ -42,12 +42,12 @@ export default function SpamPoststable({ spamPosts, setSpamPosts }) {
             .then(({ data: { message } }) => {
                 console.log('Spam Post Removed Successfully')
                 toast.dark(message, AdminOptions)
+                const PostNew = spamPosts.filter(post => post._id !== postId)
+                setSpamPosts(PostNew)
             })
             .catch(error => {
                 console.log(error.response.data)
             })
-        const PostNew = spamPosts.filter(post => post._id !== postId)
-        setSpamPosts(PostNew)
     }
 
     const handleUnmarkSpamPost = (postId) => {
