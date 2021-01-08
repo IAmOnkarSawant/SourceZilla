@@ -150,7 +150,7 @@ router.get('/user', authenticate, (req, res) => {
     res.json(req.user)
 });
 
-router.get('/getallusers', authenticate,restricted, (req, res) => {
+router.get('/getallusers', authenticate, restricted, (req, res) => {
     User.find({}).sort('role')
         .then((data) => {
             res.status(200).json(data)
@@ -161,7 +161,7 @@ router.get('/getallusers', authenticate,restricted, (req, res) => {
 })
 
 
-router.delete('/deleteuser/:id', authenticate,restricted, (req, res) => {
+router.delete('/deleteuser/:id', authenticate, restricted, (req, res) => {
     User.findByIdAndDelete({ _id: req.params.id }, (err, response) => {
         if (err) {
             res.status(400).json({ err: 'Some Error is occurs' })
