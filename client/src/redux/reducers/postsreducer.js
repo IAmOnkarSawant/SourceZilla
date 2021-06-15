@@ -4,17 +4,23 @@ const initialState = {
     postIndividual: {},
     comments: [],
     followedCategories: [],
-    percentage: 0
+    percentage: 0,
+    isLoading: false,
+    hasMore: false
 }
 
 const postreducer = (state = initialState, action) => {
     console.log(action)
     switch (action.type) {
         case 'GET_CATEGORIES':
-            // const categories = action.payload.slice()
             return {
                 ...state,
                 categories: action.payload
+            }
+        case 'CLEAN_GET_CATEGORIES':
+            return {
+                ...state,
+                categories: [],
             }
         case 'CREATE_CATEGORY':
             return {
@@ -60,7 +66,8 @@ const postreducer = (state = initialState, action) => {
         case 'GET_POSTS_BY_CAT_ID':
             return {
                 ...state,
-                posts: action.payload
+                posts: state.posts.concat(action.payload),
+                isLoading: false
             }
         case 'POST_CREATE':
             return {
@@ -243,11 +250,29 @@ const postreducer = (state = initialState, action) => {
                 categories: action.payload
             }
 
+        case 'FETCHER':
+            return {
+                ...state,
+                isLoading: true
+            }
         case 'FOLLOWED_CATEGORIES':
             return {
                 ...state,
-                followedCategories: action.payload
+                followedCategories: state.followedCategories.concat(action.payload),
+                isLoading: false
             }
+        case 'HAS_MORE':
+            return {
+                ...state,
+                hasMore: action.hasMore
+            }
+
+        case 'CLEAR_FOLLOWED_CATEGORIES':
+            return {
+                ...state,
+                followedCategories: [],
+            }
+
         case 'REPORT_FOLLOWED_CATEGORY':
             return {
                 ...state,
@@ -267,7 +292,7 @@ const postreducer = (state = initialState, action) => {
         case 'UNFOLLOW_FOLLOWED_CATEGORY':
             return {
                 ...state,
-                followedCategories: state.followedCategories.filter(category => category._id !== action.categoryId)
+                followedCategories: state.followedCategories.filter(category => category._id !== action.categoryId),
             }
 
         case 'PROGRESS':

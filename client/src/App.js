@@ -57,10 +57,10 @@ class App extends Component {
 
             <Route exact path="/explore/" component={Explore} />
 
-            <AdminAuth exact path="/admin/" component={() => <Admin />} />
-            <AdminAuth exact path="/admin/userscoll/" component={() => <UsersCollection />} />
-            <AdminAuth exact path="/admin/spamposts/" component={() => <SpamPosts />} />
-            <AdminAuth exact path="/admin/spamcategories/" component={() => <SpamCategories />} />
+            <AdminAuth exact path="/admin/" component={(props) => <Admin {...props} />} />
+            <AdminAuth exact path="/admin/userscoll/" component={(props) => <UsersCollection {...props} />} />
+            <AdminAuth exact path="/admin/spamposts/" component={(props) => <SpamPosts {...props} />} />
+            <AdminAuth exact path="/admin/spamcategories/" component={(props) => <SpamCategories {...props} />} />
 
             {/* //protected routes */}
 

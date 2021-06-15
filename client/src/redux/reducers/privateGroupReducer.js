@@ -2,16 +2,30 @@ const initialState = {
     groups: [],
     groupsIndividualPosts: [],
     passcode: '',
-    groupAdmin: ''
+    groupAdmin: '',
+    isLoading : false,
+    hasMore : false
 }
 
 const privategroupreducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'FETCHER':
+            return {
+                ...state,
+                isLoading : true
+            }
+
+        case 'HAS_MORE' : 
+        return {
+            ...state,
+            hasMore : action.hasMore
+        }
         case 'GET_PRIVATE_GROUPS':
             return {
                 ...state,
                 groups: action.payload
             }
+        
         case 'CREATE_PRIVATE_GROUP':
             return {
                 ...state,
@@ -24,8 +38,9 @@ const privategroupreducer = (state = initialState, action) => {
         case 'GET_PRIVATE_POSTS_BY_GROUP_ID':
             return {
                 ...state,
-                groupsIndividualPosts: action.payload,
-                groupAdmin: action.groupAdmin
+                groupsIndividualPosts: state.groupsIndividualPosts.concat(action.payload),
+                groupAdmin: action.groupAdmin,
+                isLoading: false
             }
         case 'CLEAR_INDIVIDUAL_POSTS':
             return {

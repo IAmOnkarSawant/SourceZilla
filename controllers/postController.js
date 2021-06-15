@@ -11,7 +11,7 @@ const { check, validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
 const authenticate = require('../middlewares/authenticate');
-const { upload, deleteFile, retrieveFile, getFileDetails } = require('../models/db');
+const { upload, deleteFile, retrieveFile, getFileDetails, retrieveVideoFile } = require('../models/db');
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -128,7 +128,6 @@ router.get('/getcomments/:postId', async (req, res, next) => {
 router.get('/file/:filename', (req, res, next) => {
     retrieveFile(res, next, req.params.filename);
 });
-
 
 // Create a new post.
 router.post('/create', upload.single('file'), [check('postContent').isLength({ min: 4 })], authenticate, async (req, res, next) => {

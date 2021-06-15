@@ -25,21 +25,20 @@ export const profileDetails = () => {
     }
 }
 
-export const profileMyPosts = () => {
+export const profileMyPosts = (page) => {
     return (dispatch) => {
         dispatch({
-            type: 'LOADING',
-            payload: true
+            type: 'FETHCER',
         })
-        Axios.get(`/user/myposts/`)
+        Axios.get(`/user/myposts/${page}`)
             .then(({ data: { posts } }) => {
                 dispatch({
                     type: 'PROFILE_MYPOSTS',
-                    payload: posts.reverse()
+                    payload: posts
                 })
                 dispatch({
-                    type: 'LOADING',
-                    payload: false
+                    type: 'HAS_MORE',
+                    hasMore: posts.length > 0
                 })
             })
             .catch(error => {
@@ -48,21 +47,20 @@ export const profileMyPosts = () => {
     }
 }
 
-export const profileResourceBox = () => {
+export const profileResourceBox = (page) => {
     return (dispatch) => {
         dispatch({
-            type: 'LOADING',
-            payload: true
+            type: 'FETHCER',
         })
-        Axios.get(`/user/resourcebox/`)
+        Axios.get(`/user/resourcebox/${page}`)
             .then(({ data: { resourcebox } }) => {
                 dispatch({
                     type: 'PROFILE_RESOURCEBOX',
-                    payload: resourcebox.reverse()
+                    payload: resourcebox
                 })
                 dispatch({
-                    type: 'LOADING',
-                    payload: false
+                    type: 'HAS_MORE',
+                    hasMore: resourcebox.length > 0
                 })
             })
             .catch(error => {
@@ -101,7 +99,7 @@ export const changeUsername = (newUserName) => {
             })
             .catch(error => {
                 console.log(error.response.data)
-                toast.error(error.response.data.message,AdminOptions)
+                toast.error(error.response.data.message, AdminOptions)
             })
     }
 }
@@ -122,7 +120,7 @@ export const changeDpOfUser = (file) => {
             })
             .catch(error => {
                 console.log(error.response.data)
-                toast.error(error.response.data.message,AdminOptions)
+                toast.error(error.response.data.message, AdminOptions)
             })
     }
 }
@@ -158,7 +156,7 @@ export const changeGithub = (github) => {
             })
             .catch(error => {
                 console.log(error.response.data)
-                toast.error(error.response.data.message,AdminOptions)
+                toast.error(error.response.data.message, AdminOptions)
             })
     }
 }
@@ -177,7 +175,7 @@ export const changeLinkedIn = (linkedIn) => {
             })
             .catch(error => {
                 console.log(error.response.data)
-                toast.error(error.response.data.message,AdminOptions)
+                toast.error(error.response.data.message, AdminOptions)
             })
     }
 }
@@ -196,7 +194,7 @@ export const changeTwitter = (twitter) => {
             })
             .catch(error => {
                 console.log(error.response.data)
-                toast.error(error.response.data.message,AdminOptions)
+                toast.error(error.response.data.message, AdminOptions)
             })
     }
 }

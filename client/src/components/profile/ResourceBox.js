@@ -1,42 +1,66 @@
-import { Box, Button } from '@material-ui/core'
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { Box, Button, CircularProgress } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { connect, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { profileResourceBox, profileResourceBoxDelete } from '../../redux/actions/profileAction'
 import FlipMove from 'react-flip-move'
 import moment from 'moment'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import ProfileLoader from '../ProfileLoader'
+import { Waypoint } from 'react-waypoint'
 import { replaceURLWithHTMLLinks } from '../../utils/utils'
 
 function ResourceBox(props) {
 
+    const [pageNumber, setPageNumber] = useState(1);
+    const fetcher = () => {
+        setPageNumber(page => page + 1)
+    }
+
     const { profileResourceBox } = props
     useEffect(() => {
-        profileResourceBox()
-    }, [profileResourceBox])
+        profileResourceBox(pageNumber)
+    }, [profileResourceBox, pageNumber])
 
     const handleDeleteResource = (id) => {
         console.log(id)
         props.profileResourceBoxDelete(id)
     }
 
-    if (props.loading) {
-        return (
-            <ProfileLoader />
-        )
-    }
+    const dispatch = useDispatch();
+    useEffect(() => {
+        return () => {
+            dispatch({
+                type: 'CLEAR_PROFILE_RESOURCEBOX'
+            })
+        }
+    }, [dispatch])
+
+    const EnterticketNotVisibleState = {
+        opacity: 0.1
+    };
+    const LeaveticketNotVisibleState = {
+        opacity: 0.1
+    };
 
     return (
         <>
-            <FlipMove>
+            <FlipMove
+                enterAnimation={{
+                    from: EnterticketNotVisibleState,
+                    to: {}
+                }}
+                leaveAnimation={{
+                    from: {},
+                    to: LeaveticketNotVisibleState
+                }}
+            >
                 {props?.resourceBox && props?.resourceBox?.map(resource =>
                     <Box position="relative" className="resourceBox" key={resource._id} boxShadow={1}>
                         <div className="resourceBox_content">
                             <span className="resourceBox_createdAt">{moment(resource.createdAt).fromNow()}</span>
                             <span className="resourceBox_postContent">
-                            <pre style={{lineHeight : '28px'}} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(resource.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
+                                <pre style={{ lineHeight: '28px' }} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(resource.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
                             </span>
                         </div>
                         <div className="resourceBox_buttons">
@@ -51,6 +75,20 @@ function ResourceBox(props) {
                         </div>
                     </Box>
                 )}
+
+                {props.hasMore === true && props.isLoading === false && <Waypoint onEnter={fetcher} />}
+
+                <br />
+                {/* progress */}
+                {(props.hasMore === true && (
+
+                    <div style={{ textAlign: "center" }}>
+                        <CircularProgress size={50} thickness={3} />
+                    </div>
+
+                ))}
+                <br />
+
             </FlipMove>
         </>
     )
@@ -59,7 +97,8 @@ function ResourceBox(props) {
 const mapStateToProps = (state) => {
     return {
         resourceBox: state.profile.resourceBox,
-        loading: state.loading.loading
+        isLoading: state.profile.isLoading,
+        hasMore: state.profile.hasMore,
     }
 }
 

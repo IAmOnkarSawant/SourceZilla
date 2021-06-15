@@ -39,14 +39,26 @@ router.get('/', async (req, res, next) => {
 
 });
 
-router.get('/view/:privateGroupId', authenticate, async (req, res, next) => {
+router.get('/view/:privateGroupId/:page', authenticate, async (req, res, next) => {
 
     const { privateGroupId } = req.params;
     const userId = req.user.userId;
 
+    const page = parseInt(req.params.page, 10)
+    const limit = 2
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     let group, updatedPosts, userPost;
     try {
-        group = await PrivateGroups.findById(privateGroupId).populate('posts').exec();
+        group = await PrivateGroups.findById(privateGroupId)
+            .populate({
+                path: 'posts',
+                options: {
+                    sort: { _id: -1 }
+                }
+            })
+            .exec();
     } catch (err) {
         const error = new HttpError('Could Not fetch the private groups', 500);
         return next(error);
@@ -125,7 +137,7 @@ router.get('/view/:privateGroupId', authenticate, async (req, res, next) => {
         "groupName": group.groupName,
         "groupAdmin": group.groupAdmin,
         "members": group.members.length,
-        "posts": updatedPosts
+        "posts": updatedPosts.slice(startIndex, endIndex)
     }
 
     res.status(200).json({ groupsPosts: outgroup.posts, groupAdmin: outgroup.groupAdmin, groupName: outgroup.groupName, members: outgroup.members });

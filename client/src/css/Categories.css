@@ -14,7 +14,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  /* border: 1px solid grey; */
+  border: 1px solid grey;
   position: relative;
   color: white;
   overflow: hidden;
@@ -202,11 +202,14 @@
   padding-bottom: 20px;
 }
 
-
-.MuiNativeSelect-root{
+.MuiNativeSelect-root {
   padding: 10px 40px !important;
 }
-.MuiNativeSelect-select{
+.MuiNativeSelect-select {
   display: flex !important;
   flex-direction: column !important;
+}
+
+.MuiCircularProgress-root {
+  color: rgb(4, 167, 77) !important;
 }

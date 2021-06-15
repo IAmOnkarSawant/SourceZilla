@@ -1,4 +1,4 @@
-import { Button, Container, Fab } from '@material-ui/core'
+import { Button, CircularProgress, Container, Fab } from '@material-ui/core'
 import React from 'react'
 import '../../css/PostByCategoryId.css'
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,7 +23,7 @@ import { profileDetails, } from '../../redux/actions/profileAction'
 
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import Layout from '../Layout'
 import { ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, replaceURLWithHTMLLinks, capitalizeFirstLetter } from '../../utils/utils';
@@ -40,6 +40,7 @@ import ScrollToTop from 'react-scroll-up'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import Loader from '../Loader';
 import { Toggle } from "react-toggle-component"
+import { Waypoint } from 'react-waypoint'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,6 +66,14 @@ const useStyles = makeStyles((theme) => ({
     input: {
         display: 'none',
     },
+    LeaveButton: {
+        background: 'linear-gradient( to right, rgb(4, 167, 77) 0%, #04795d 0%, #1db853 )',
+        border: 0,
+        borderRadius: 20,
+        color: 'white',
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(2)
+    }
 }));
 
 function PostsBycategory(props) {
@@ -74,6 +83,11 @@ function PostsBycategory(props) {
         props.history.push('/groups/')
     }
 
+    const [pagenumber, setpagenumber] = useState(1);
+    const fetcher = () => {
+        setpagenumber(page => page + 1)
+    }
+
     const [toggle, setToggle] = useState(true)
     const [postContent, setpostContent] = useState('')
     const [file, setFile] = useState('')
@@ -81,13 +95,21 @@ function PostsBycategory(props) {
     const { getprivateGroupPostsById, profileDetails, match: { params: { groupId } } } = props
 
     useEffect(() => {
-        getprivateGroupPostsById(groupId)
+        getprivateGroupPostsById(groupId, pagenumber)
         profileDetails()
 
         store.dispatch({ type: 'CLEAR_INDIVIDUAL_POST' })
         store.dispatch({ type: 'CLEAN_COMMENTS' })     //clean comments state everytime when this component mount !
-    }, [getprivateGroupPostsById, profileDetails, groupId])
+    }, [getprivateGroupPostsById, profileDetails, groupId, pagenumber])
 
+    const dispatch = useDispatch()
+    useEffect(() => {
+        return () => {
+            dispatch({
+                type: 'CLEAR_INDIVIDUAL_POSTS'
+            })
+        }
+    }, [dispatch])
 
     const handleSubmitPost = (e) => {
         e.preventDefault()
@@ -149,13 +171,12 @@ function PostsBycategory(props) {
                     <p className="groupAdmin_name">Group Admin</p>
                 )}
                 <div className="imp_private-info">
-                    <Fab className={classes.leave_button + ' leave_group_icon'} size="medium" color="secondary" variant="extended" onClick={() => handleLeaveGroup(props.match.params.groupId)}>
-                        <ExitToAppIcon className={classes.extendedIcon} />
-                        <span style={{ marginLeft: '10px' }} >Leave Group</span>
-                    </Fab>
-                    <p>
+                    <Button startIcon={<ExitToAppIcon />} disableElevation className={classes.LeaveButton} onClick={() => handleLeaveGroup(props.match.params.groupId)} size="medium" variant="contained" color="default"  >
+                        Leave
+                    </Button>
+                    <Typography gutterBottom variant="h4" color="default">
                         {capitalizeFirstLetter(props.match.params.groupName)}
-                    </p>
+                    </Typography>
                     <div htmlFor="toggle-1">
                         <Toggle
                             name="toggle-1"
@@ -244,10 +265,10 @@ function PostsBycategory(props) {
                                                                 <DeleteIcon />
                                                             </IconButton>
                                                         ) : (
-                                                                <IconButton disableFocusRipple={true} disableRipple={true} className="delete_button" disabled onClick={() => handleDeletePrivatePost(post._id)} size="small" variant="contained" >
-                                                                    <DeleteIcon />
-                                                                </IconButton>
-                                                            )
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} className="delete_button" disabled onClick={() => handleDeletePrivatePost(post._id)} size="small" variant="contained" >
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        )
                                                     }
                                                     {
                                                         // post.spamFlag === false &&
@@ -257,10 +278,10 @@ function PostsBycategory(props) {
                                                                     <FlagIcon />
                                                                 </IconButton>
                                                             ) : (
-                                                                    <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
-                                                                        <FlagOutlinedIcon />
-                                                                    </IconButton>
-                                                                )
+                                                                <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
+                                                                    <FlagOutlinedIcon />
+                                                                </IconButton>
+                                                            )
                                                         )
                                                     }
                                                 </div>
@@ -270,7 +291,7 @@ function PostsBycategory(props) {
                                         />
                                         <CardContent>
                                             <Typography style={{ marginBottom: '20px' }} variant="body2" color="textSecondary" component="p">
-                                                <pre dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
+                                                <pre style={{ textDecoration: 'none' }} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
                                             </Typography>
                                             {ImageFormat?.includes(post?.fileContentType) && post?.fileName && (
                                                 <img
@@ -281,14 +302,14 @@ function PostsBycategory(props) {
                                                 />
                                             )}
                                             {ApplicationFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
+                                                <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
                                                     <Button className="link_button_file" variant="contained" size="small">
                                                         View Document
                                                     </Button>
                                                 </a>
                                             )}
                                             {TextFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
+                                                <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
                                                     <Button className="link_button_file" variant="contained" size="small">
                                                         View Document
                                                     </Button>
@@ -296,7 +317,7 @@ function PostsBycategory(props) {
                                             )}
                                             {AudioAllFormat?.includes(post?.fileContentType) && post?.fileName && (
                                                 <ReactAudioPlayer
-                                                    src={`/posts/file/${post.fileName}`}
+                                                    src={`/streamer/live/${post.fileName}`}
                                                     controls
                                                     controlsList="nodownload"
                                                 />
@@ -304,7 +325,7 @@ function PostsBycategory(props) {
                                             {VideoFormat?.includes(post?.fileContentType) && post?.fileName && (
                                                 <ReactPlayer
                                                     className='react-player fixed-bottom'
-                                                    url={`/posts/file/${post.fileName}`}
+                                                    url={`/streamer/live/${post.fileName}`}
                                                     width='500px'
                                                     height='300px'
                                                     controls={true}
@@ -331,21 +352,21 @@ function PostsBycategory(props) {
                                                         </IconButton>
                                                     </div>
                                                 ) : (
-                                                        <div className="up__vote">
-                                                            <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvotePrivatePost(post._id)} aria-label="add to favorites">
-                                                                <ThumbUpAltIcon />
-                                                                <Typography className={classes.up_votes_count} variant="h6" component="h6">
-                                                                    {post.upvotes.length}
-                                                                </Typography>
-                                                            </IconButton>
-                                                            <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvotePrivatePost(post._id)} aria-label="remove from favorites" style={{ color: `${post?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
-                                                                <ThumbDownAltIcon />
-                                                                <Typography className={classes.down_votes_count} variant="h6" component="h6">
-                                                                    {post.downvotes.length}
-                                                                </Typography>
-                                                            </IconButton>
-                                                        </div>
-                                                    )
+                                                    <div className="up__vote">
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvotePrivatePost(post._id)} aria-label="add to favorites">
+                                                            <ThumbUpAltIcon />
+                                                            <Typography className={classes.up_votes_count} variant="h6" component="h6">
+                                                                {post.upvotes.length}
+                                                            </Typography>
+                                                        </IconButton>
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvotePrivatePost(post._id)} aria-label="remove from favorites" style={{ color: `${post?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
+                                                            <ThumbDownAltIcon />
+                                                            <Typography className={classes.down_votes_count} variant="h6" component="h6">
+                                                                {post.downvotes.length}
+                                                            </Typography>
+                                                        </IconButton>
+                                                    </div>
+                                                )
                                             }
 
                                             <Link to={`/post/${post._id}`} >
@@ -385,6 +406,19 @@ function PostsBycategory(props) {
                     <ArrowUpwardIcon style={{ color: 'white' }} />
                 </IconButton>
             </ScrollToTop>
+
+            {props.hasMore === true && props.isLoading === false && <Waypoint onEnter={fetcher} />}
+
+            <br />
+            {/* progress */}
+            {(props.hasMore === true && (
+
+                <div style={{ textAlign: "center" }}>
+                    <CircularProgress size={70} thickness={3} />
+                </div>
+
+            ))}
+            <br />
         </Layout>
     )
 }
@@ -395,7 +429,8 @@ const mapStateToProps = (state) => {
         groupAdmin: state.groups.groupAdmin,
         errors: state.errors.Errors,
         auth: state.auth,
-        loading: state.loading.loading,
+        isLoading: state.groups.isLoading,
+        hasMore: state.groups.hasMore,
         percentage: state.posts.percentage
     }
 }

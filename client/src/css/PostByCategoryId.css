@@ -217,12 +217,12 @@ audio {
 }
 
 /* progressbar */
-.react-sweet-progress-line,
+/* .react-sweet-progress-line,
 .react-sweet-progress-line-inner {
   height: 17px !important;
-}
+} */
 .react-sweet-progress-symbol {
-  font-weight: 600 !important;
+  font-weight: 300 !important;
 }
 
 /* pre tag */

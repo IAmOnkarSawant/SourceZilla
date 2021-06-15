@@ -86,9 +86,9 @@ export const createCategory = (cat) => {
                         payload: false
                     })
                     dispatch({
-                        type : 'ALREADY_EXISTED_POST',
-                        payload : {
-                            existedCategory : error.response.data.category
+                        type: 'ALREADY_EXISTED_POST',
+                        payload: {
+                            existedCategory: error.response.data.category
                         }
                     })
                 }
@@ -126,21 +126,22 @@ export const getCategories = () => {
     }
 }
 
-export const getPosts = (categoryId) => {
+export const getPosts = (categoryId, page) => {
     return (dispatch) => {
         dispatch({
-            type: 'LOADING',
-            payload: true
+            type: 'FETCHER'
         })
-        Axios.get(`/category/getposts/${categoryId}`)
+        Axios.get(`/category/getposts/${categoryId}/${page}`)
             .then(({ data: { category: { posts } } }) => {
+                setTimeout(() => {
+                    dispatch({
+                        type: 'GET_POSTS_BY_CAT_ID',
+                        payload: posts                 //reverse array 
+                    })
+                }, 2000)
                 dispatch({
-                    type: 'GET_POSTS_BY_CAT_ID',
-                    payload: posts.reverse()                     //reverse array 
-                })
-                dispatch({
-                    type: 'LOADING',
-                    payload: false
+                    type: 'HAS_MORE',
+                    hasMore: posts.length > 0
                 })
                 console.log(posts)
             })
@@ -309,14 +310,14 @@ export const deleteComment = (c_data) => {
     }
 }
 
-export const follow = (id) => {
+export const follow = (categoryId) => {
     return (dispatch) => {
-        Axios.patch(`/category/follow/`, id)
+        Axios.patch(`/category/follow/${categoryId}`)
             .then(({ data }) => {
                 dispatch({
                     type: 'FOLLOW_CATEGORY',
                     payload: data.userId,               //userId
-                    categoryId: id.categoryId          //categoryId
+                    categoryId: categoryId          //categoryId
                 })
                 console.log(data)
             })
@@ -327,14 +328,14 @@ export const follow = (id) => {
     }
 }
 
-export const unFollow = (id) => {
+export const unFollow = (categoryId) => {
     return (dispatch) => {
-        Axios.patch(`/category/unfollow/`, id)
+        Axios.patch(`/category/unfollow/${categoryId}`)
             .then(({ data }) => {
                 dispatch({
                     type: 'UNFOLLOW_CATEGORY',
                     payload: data.userId,              //userId
-                    categoryId: id.categoryId         //categoryId
+                    categoryId: categoryId        //categoryId
                 })
                 console.log(data)
             })
@@ -508,31 +509,34 @@ export const oldestCategories = () => {
     }
 }
 
-export const followedCategories = () => {
+export const followedCategories = (pageNumber) => {
     return (dispatch) => {
-        Axios.get(`/category/followedCategories/`)
+        dispatch({ type: 'FETCHER' })
+        Axios.get(`/category/followedCategories/${pageNumber}`)
             .then(({ data }) => {
                 dispatch({
                     type: 'FOLLOWED_CATEGORIES',
-                    payload: data.categories
+                    payload: data.categories,
+                })
+                dispatch({
+                    type: 'HAS_MORE',
+                    hasMore: data.categories.length > 0
                 })
                 console.log(data)
             })
             .catch(error => {
                 console.log(error.response.data)
             })
-
     }
 }
 
-export const unFollowFollowedCategory = (id) => {
+export const unFollowFollowedCategory = (categoryId) => {
     return (dispatch) => {
-        Axios.patch(`/category/unfollow/`, id)
+        Axios.patch(`/category/unfollow/${categoryId}`)
             .then(({ data }) => {
                 dispatch({
                     type: 'UNFOLLOW_FOLLOWED_CATEGORY',
-                    payload: data.userId,              //userId
-                    categoryId: id.categoryId         //categoryId
+                    categoryId: categoryId        //categoryId
                 })
                 console.log(data)
             })

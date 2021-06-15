@@ -1,4 +1,4 @@
-import { Button, Container } from '@material-ui/core'
+import { Button, CircularProgress, Container } from '@material-ui/core'
 import React from 'react'
 import '../../css/PostByCategoryId.css'
 
@@ -21,25 +21,24 @@ import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
 import moment from 'moment'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Layout from '../Layout'
 import { postCreate, getPosts, postDelete, UpVote, DownVote, addresourcebox, reportPost, removeFromResourceBox } from '../../redux/actions/postsActions'
 import { profileDetails } from '../../redux/actions/profileAction'
-import store from '../../redux/store'
 import { replaceURLWithHTMLLinks, ApplicationFormat, AudioAllFormat, TextFormat, ImageFormat, VideoFormat, capitalizeFirstLetter } from '../../utils/utils';
 import FlipMove from 'react-flip-move'
 import LaunchIcon from '@material-ui/icons/Launch';
 import AttachmentIcon from '@material-ui/icons/Attachment';
 import CreateIcon from '@material-ui/icons/Create';
 import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
-import ReactPlayer from 'react-player/lazy'
+import ReactPlayer from 'react-player'
 import ReactAudioPlayer from 'react-audio-player';
 import "react-sweet-progress/lib/style.css";
 import { Progress } from 'react-sweet-progress'
 import ScrollToTop from 'react-scroll-up'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import Loader from '../Loader';
+import { Waypoint } from 'react-waypoint';
 import { Toggle } from "react-toggle-component"
 
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +67,11 @@ const useStyles = makeStyles((theme) => ({
 function PostsBycategory(props) {
     const classes = useStyles();
     // console.log(props.match.params.categoryId)
-    
+
+    const [pageNumber, setPageNumber] = useState(1);
+    const fetcher = () => {
+        setPageNumber(page => page + 1);
+    }
 
     const [toggle, setToggle] = useState(true)
     const [postContent, setpostContent] = useState('')
@@ -76,12 +79,11 @@ function PostsBycategory(props) {
 
     const { getPosts, profileDetails, match: { params: { categoryId } } } = props
     useEffect(() => {
-        getPosts(categoryId)   //get posts by categoryId
-        profileDetails()                         //get user details 🍕
+        getPosts(categoryId, pageNumber)   //get posts by categoryId
 
-        store.dispatch({ type: 'CLEAR_INDIVIDUAL_POST' })
-        store.dispatch({ type: 'CLEAN_COMMENTS' })     //clean comments state everytime when this component mount !
-    }, [getPosts, profileDetails, categoryId])
+        // store.dispatch({ type: 'CLEAR_INDIVIDUAL_POST' })
+        // store.dispatch({ type: 'CLEAN_COMMENTS' })     //clean comments state everytime when this component mount !
+    }, [getPosts, profileDetails, categoryId, pageNumber])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -131,7 +133,15 @@ function PostsBycategory(props) {
         props.reportPost(id, props.auth.user.userId)
     }
 
-    
+    const dispatch = useDispatch()
+    useEffect(() => {
+        profileDetails()
+        return () => {
+            dispatch({
+                type: 'CLEAN_POSTS'
+            })
+        }
+    }, [dispatch, profileDetails])
 
     const EnterticketNotVisibleState = {
         opacity: 0.1
@@ -140,12 +150,8 @@ function PostsBycategory(props) {
         opacity: 0.1
     };
 
-    if (props.loading === true) {
-        return (
-            <Loader />
-        )
-    }
     console.log(toggle)
+
     return (
         <Layout>
             <Container maxWidth="lg" >
@@ -223,161 +229,161 @@ function PostsBycategory(props) {
                         }}
                     >
                         {props.posts && props.posts.map(post =>
-                            (
-                                <Card key={post._id} className={classes.root + " post_card"} >
-                                    <div className={`${post.spamFlag === true ? 'bg-content' : ''}`} style={{ position: 'relative' }}>
+                        (
+                            <Card key={post._id} className={classes.root + " post_card"} >
+                                <div className={`${post.spamFlag === true ? 'bg-content' : ''}`} style={{ position: 'relative' }}>
 
-                                        <CardHeader
-                                            avatar={
-                                                <Avatar
-                                                    className="post_user_profile_photo"
-                                                    alt={post.postBy.toLocaleUpperCase()}
-                                                    src={`/posts/file/${post.profileImage}`}
-                                                />
-                                            }
-                                            action={
-                                                <div className="post_right_buttons">
-                                                    
-                                                    {
-                                                        props.auth.user.userId === post.postByUserId ? (
-                                                            <IconButton disableFocusRipple={true} disableRipple={true} className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained"  >
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                        ) : (
-                                                                <IconButton disableFocusRipple={true} disableRipple={true} disabled className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained" >
-                                                                    <DeleteIcon />
-                                                                </IconButton>
-                                                            )
-                                                    }
-                                                    {
-                                                        // post.spamFlag === false &&
-                                                        (
-                                                            post?.reports?.includes(props.auth.user.userId) ? (
-                                                                <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
-                                                                    <FlagIcon />
-                                                                </IconButton>
-                                                            ) : (
-                                                                    <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
-                                                                        <FlagOutlinedIcon />
-                                                                    </IconButton>
-                                                                )
-                                                        )
-                                                    }
-                                                    {
-                                                        props?.details?.resourceBox?.includes(post._id) ? (
-                                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => removeFromResource(post._id)} size="small" variant="contained"  >
-                                                                <BookmarkIcon />
-                                                            </IconButton>
-                                                        ) : (
-                                                                <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => addToResource(post._id)} size="small" variant="contained" >
-                                                                    <BookmarkBorderOutlinedIcon />
-                                                                </IconButton>
-                                                            )
-                                                    }
-                                                </div>
-                                            }
-                                            title={post.postBy}
-                                            subheader={moment(post.createdAt).fromNow()}
-                                        />
-                                        <CardContent>
-                                            <Typography style={{ marginBottom: '20px' }} variant="body2" color="textSecondary" component="p">
-                                                <pre style={{ lineHeight: '28px' }} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
-                                            </Typography>
-                                            {ImageFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <img
-                                                    height="300px"
-                                                    width="450px"
-                                                    src={`/posts/file/${post.fileName}`}
-                                                    alt=""
-                                                />
-                                            )}
-                                            {ApplicationFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
-                                                    <Button className="link_button_file" variant="contained" size="small">
-                                                        View Document
-                                                    </Button>
-                                                </a>
-                                            )}
-                                            {TextFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
-                                                    <Button className="link_button_file" variant="contained" size="small">
-                                                        View Document
-                                                    </Button>
-                                                </a>
-                                            )}
-                                            {AudioAllFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <ReactAudioPlayer
-                                                    src={`/posts/file/${post.fileName}`}
-                                                    controls
-                                                    controlsList="nodownload"
-                                                />
-                                            )}
-                                            {VideoFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <ReactPlayer
-                                                    className='react-player fixed-bottom'
-                                                    url={`/posts/file/${post.fileName}`}
-                                                    width='500px'
-                                                    height='300px'
-                                                    controls={true}
-                                                    onContextMenu={e => e.preventDefault()}
-                                                    config={{ file: { attributes: { controlsList: 'nodownload' } } }}
-                                                />
-                                            )}
-                                        </CardContent>
-                                        <CardActions disableSpacing>
-                                            {
-                                                post?.upvotes?.includes(props?.auth?.user?.userId) ? (
-                                                    <div className="down__vote">
-                                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvote(post._id)} aria-label="add to favorites" style={{ color: `${post?.upvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
-                                                            <ThumbUpAltIcon />
-                                                            <Typography className={classes.up_votes_count} variant="h6" component="h6">
-                                                                {post.upvotes.length}
-                                                            </Typography>
+                                    <CardHeader
+                                        avatar={
+                                            <Avatar
+                                                className="post_user_profile_photo"
+                                                alt={post.postBy.toLocaleUpperCase()}
+                                                src={`/posts/file/${post.profileImage}`}
+                                            />
+                                        }
+                                        action={
+                                            <div className="post_right_buttons">
+
+                                                {
+                                                    props.auth.user.userId === post.postByUserId ? (
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained"  >
+                                                            <DeleteIcon />
                                                         </IconButton>
-                                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvote(post._id)} aria-label="remove from favorites">
-                                                            <ThumbDownAltIcon />
-                                                            <Typography className={classes.down_votes_count} variant="h6" component="h6">
-                                                                {post.downvotes.length}
-                                                            </Typography>
+                                                    ) : (
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} disabled className="delete_button" onClick={() => handleDeletePost(post._id)} size="small" variant="contained" >
+                                                            <DeleteIcon />
                                                         </IconButton>
-                                                    </div>
-                                                ) : (
-                                                        <div className="up__vote">
-                                                            <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvote(post._id)} aria-label="add to favorites">
-                                                                <ThumbUpAltIcon />
-                                                                <Typography className={classes.up_votes_count} variant="h6" component="h6">
-                                                                    {post.upvotes.length}
-                                                                </Typography>
-                                                            </IconButton>
-                                                            <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvote(post._id)} aria-label="remove from favorites" style={{ color: `${post?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
-                                                                <ThumbDownAltIcon />
-                                                                <Typography className={classes.down_votes_count} variant="h6" component="h6">
-                                                                    {post.downvotes.length}
-                                                                </Typography>
-                                                            </IconButton>
-                                                        </div>
                                                     )
-                                            }
-                                            <Link to={`/post/${post._id}`} >
-                                                <IconButton disableFocusRipple={true} disableRipple={true} style={{ marginLeft: '10px' }} size="small" variant="contained" color="default" >
-                                                    <LaunchIcon />
-                                                </IconButton>
-                                            </Link>
-                                        </CardActions>
-                                        {/* {post.spamFlag && (
+                                                }
+                                                {
+                                                    // post.spamFlag === false &&
+                                                    (
+                                                        post?.reports?.includes(props.auth.user.userId) ? (
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
+                                                                <FlagIcon />
+                                                            </IconButton>
+                                                        ) : (
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => handleReportPost(post._id)} size="small" variant="contained"  >
+                                                                <FlagOutlinedIcon />
+                                                            </IconButton>
+                                                        )
+                                                    )
+                                                }
+                                                {
+                                                    props?.details?.resourceBox?.includes(post._id) ? (
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => removeFromResource(post._id)} size="small" variant="contained"  >
+                                                            <BookmarkIcon />
+                                                        </IconButton>
+                                                    ) : (
+                                                        <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#0FAB4A' }} onClick={() => addToResource(post._id)} size="small" variant="contained" >
+                                                            <BookmarkBorderOutlinedIcon />
+                                                        </IconButton>
+                                                    )
+                                                }
+                                            </div>
+                                        }
+                                        title={post.postBy}
+                                        subheader={moment(post.createdAt).fromNow()}
+                                    />
+                                    <CardContent>
+                                        <Typography style={{ marginBottom: '20px' }} variant="body2" color="textSecondary" component="p">
+                                            <pre style={{ lineHeight: '28px', textDecoration: 'none' }} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
+                                        </Typography>
+                                        {ImageFormat?.includes(post?.fileContentType) && post?.fileName && (
+                                            <img
+                                                height="300px"
+                                                width="450px"
+                                                src={`/posts/file/${post.fileName}`}
+                                                alt=""
+                                            />
+                                        )}
+                                        {ApplicationFormat?.includes(post?.fileContentType) && post?.fileName && (
+                                            <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
+                                                <Button className="link_button_file" variant="contained" size="small">
+                                                    View Document
+                                                </Button>
+                                            </a>
+                                        )}
+                                        {TextFormat?.includes(post?.fileContentType) && post?.fileName && (
+                                            <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
+                                                <Button className="link_button_file" variant="contained" size="small">
+                                                    View Document
+                                                </Button>
+                                            </a>
+                                        )}
+                                        {AudioAllFormat?.includes(post?.fileContentType) && post?.fileName && (
+                                            <ReactAudioPlayer
+                                                src={`/streamer/live/${post.fileName}`}
+                                                controls
+                                                controlsList="nodownload"
+                                            />
+                                        )}
+                                        {VideoFormat?.includes(post?.fileContentType) && post?.fileName && (
+                                            <ReactPlayer
+                                                className='react-player fixed-bottom'
+                                                url={`/streamer/live/${post.fileName}`}
+                                                width='500px'
+                                                height='300px'
+                                                controls={true}
+                                                onContextMenu={e => e.preventDefault()}
+                                                config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+                                            />
+                                        )}
+                                    </CardContent>
+                                    <CardActions disableSpacing>
+                                        {
+                                            post?.upvotes?.includes(props?.auth?.user?.userId) ? (
+                                                <div className="down__vote">
+                                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvote(post._id)} aria-label="add to favorites" style={{ color: `${post?.upvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
+                                                        <ThumbUpAltIcon />
+                                                        <Typography className={classes.up_votes_count} variant="h6" component="h6">
+                                                            {post.upvotes.length}
+                                                        </Typography>
+                                                    </IconButton>
+                                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvote(post._id)} aria-label="remove from favorites">
+                                                        <ThumbDownAltIcon />
+                                                        <Typography className={classes.down_votes_count} variant="h6" component="h6">
+                                                            {post.downvotes.length}
+                                                        </Typography>
+                                                    </IconButton>
+                                                </div>
+                                            ) : (
+                                                <div className="up__vote">
+                                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvote(post._id)} aria-label="add to favorites">
+                                                        <ThumbUpAltIcon />
+                                                        <Typography className={classes.up_votes_count} variant="h6" component="h6">
+                                                            {post.upvotes.length}
+                                                        </Typography>
+                                                    </IconButton>
+                                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvote(post._id)} aria-label="remove from favorites" style={{ color: `${post?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }} >
+                                                        <ThumbDownAltIcon />
+                                                        <Typography className={classes.down_votes_count} variant="h6" component="h6">
+                                                            {post.downvotes.length}
+                                                        </Typography>
+                                                    </IconButton>
+                                                </div>
+                                            )
+                                        }
+                                        <Link to={`/post/${post._id}`} >
+                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ marginLeft: '10px' }} size="small" variant="contained" color="default" >
+                                                <LaunchIcon />
+                                            </IconButton>
+                                        </Link>
+                                    </CardActions>
+                                    {/* {post.spamFlag && (
                                             <div className="sens_conte">
                                                 <h2>Sensitive Content</h2>
                                             </div>
                                         )} */}
+                                </div>
+                                <div className={`${post.spamFlag === true ? 'fg-content' : 'hide-content'}`}>
+                                    <div className="fg-content-container">
+                                        <VisibilityOffOutlinedIcon className="visibility-icon" />
+                                        <span>Post has been reported for inappropriate content</span>
                                     </div>
-                                    <div className={`${post.spamFlag === true ? 'fg-content' : 'hide-content'}`}>
-                                        <div className="fg-content-container">
-                                            <VisibilityOffOutlinedIcon className="visibility-icon" />
-                                            <span>Post has been reported for inappropriate content</span>
-                                        </div>
-                                    </div>
-                                </Card>
-                            )
+                                </div>
+                            </Card>
+                        )
                         )}
                     </FlipMove>
                 </div>
@@ -400,7 +406,20 @@ function PostsBycategory(props) {
                     <ArrowUpwardIcon style={{ color: 'white' }} />
                 </IconButton>
             </ScrollToTop>
-            
+
+            {props.hasMore === true && props.isLoading === false && <Waypoint onEnter={fetcher} />}
+
+            <br />
+            {/* progress */}
+            {(props.hasMore === true && (
+
+                <div style={{ textAlign: "center" }}>
+                    <CircularProgress size={70} thickness={3} />
+                </div>
+
+            ))}
+            <br />
+
         </Layout>
     )
 }
@@ -412,8 +431,9 @@ const mapStateToProps = (state) => {
         upVotes: state.posts.upVotes,
         downVotes: state.posts.downVotes,
         details: state.profile.details,
-        loading: state.loading.loading,
-        percentage: state.posts.percentage
+        percentage: state.posts.percentage,
+        isLoading: state.posts.isLoading,
+        hasMore: state.posts.hasMore,
     }
 }
 

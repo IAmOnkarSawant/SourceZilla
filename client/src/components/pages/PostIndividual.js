@@ -1,7 +1,7 @@
 import React from 'react'
 import '../../css/PostIndividual.css'
 import { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import Layout from '../Layout'
 import { profileDetails } from '../../redux/actions/profileAction'
 import { getPostIndividual, postCommentFromIndividual, deleteComment, getPostComments, UpVoteFromIndividual, DownVoteFromIndividual, addresourcebox, removeFromResourceBox } from '../../redux/actions/postsActions'
@@ -102,9 +102,19 @@ function PostIndividual(props) {
     useEffect(() => {
         getPostIndividual(postId)
         getPostComments(postId)
-        profileDetails()
         setExpanded(true)
     }, [getPostIndividual, getPostComments, profileDetails, postId])
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+
+        profileDetails()
+
+        return () => {
+            dispatch({ type: 'CLEAR_INDIVIDUAL_POST' })
+            dispatch({ type: 'CLEAN_COMMENTS' })
+        }
+    }, [profileDetails, dispatch])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -176,10 +186,10 @@ function PostIndividual(props) {
                                         <EditIcon />
                                     </IconButton>
                                 ) : (
-                                        <IconButton disabled disableFocusRipple={true} disableRipple={true}>
-                                            <EditIcon />
-                                        </IconButton>
-                                    )
+                                    <IconButton disabled disableFocusRipple={true} disableRipple={true}>
+                                        <EditIcon />
+                                    </IconButton>
+                                )
                                 }
                                 {props.postIndividual.accessibilty === 'public' ? (
                                     props?.details?.resourceBox?.includes(props?.match?.params?.postId) ? (
@@ -187,23 +197,23 @@ function PostIndividual(props) {
                                             <BookmarkIcon />
                                         </IconButton>
                                     ) : (
-                                            <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#05A54B' }} onClick={() => addResourceToIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
-                                                <BookmarkBorderOutlinedIcon />
-                                            </IconButton>
-                                        )
-                                ) : (
-                                        null
+                                        <IconButton disableFocusRipple={true} disableRipple={true} style={{ color: '#05A54B' }} onClick={() => addResourceToIndividual(props.match.params.postId)} size="small" variant="contained" color="primary" >
+                                            <BookmarkBorderOutlinedIcon />
+                                        </IconButton>
                                     )
+                                ) : (
+                                    null
+                                )
                                 }
                                 {props.postIndividual.accessibilty === "private" ? (
                                     <IconButton disabled disableFocusRipple={true} disableRipple={true}>
                                         <LockOpenIcon />
                                     </IconButton>
                                 ) : (
-                                        <IconButton disabled disableFocusRipple={true} disableRipple={true}>
-                                            <PublicIcon />
-                                        </IconButton>
-                                    )}
+                                    <IconButton disabled disableFocusRipple={true} disableRipple={true}>
+                                        <PublicIcon />
+                                    </IconButton>
+                                )}
                             </div>
                         }
                         title={props.postIndividual.postByUserName}
@@ -215,22 +225,22 @@ function PostIndividual(props) {
                         </Typography>
                         {ImageFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
                             <ModalImage
-                                small={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`}
-                                medium={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`}
+                                small={process.env.NODE_ENV === 'development' ? `/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`}
+                                medium={process.env.NODE_ENV === 'development' ? `/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`}
                                 showRotate
                                 imageBackgroundColor="transparent"
                                 alt=""
                             />
                         )}
                         {ApplicationFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
-                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
+                            <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
                                 <Button className="link_button_file" variant="contained" size="small">
                                     View Document
                                 </Button>
                             </a>
                         )}
                         {TextFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
-                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
+                            <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
                                 <Button className="link_button_file" variant="contained" size="small">
                                     View Document
                                 </Button>
@@ -238,7 +248,7 @@ function PostIndividual(props) {
                         )}
                         {AudioAllFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
                             <ReactAudioPlayer
-                                src={`/posts/file/${props?.postIndividual?.fileName}`}
+                                src={`/streamer/live/${props?.postIndividual?.fileName}`}
                                 controls
                                 controlsList="nodownload"
                             />
@@ -246,7 +256,7 @@ function PostIndividual(props) {
                         {VideoFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
                             <ReactPlayer
                                 className='react-player fixed-bottom'
-                                url={`/posts/file/${props?.postIndividual?.fileName}`}
+                                url={`/streamer/live/${props?.postIndividual?.fileName}`}
                                 width='500px'
                                 height='300px'
                                 controls={true}
@@ -273,21 +283,21 @@ function PostIndividual(props) {
                                     </IconButton>
                                 </div>
                             ) : (
-                                    <div className="up__vote">
-                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvoteFromIndividual(props.match.params.postId)} aria-label="add to favorites">
-                                            <ThumbUpAltIcon />
-                                            <Typography className={classes.up_votes_count} variant="h6" component="h6">
-                                                {props?.postIndividual?.upvotes?.length}
-                                            </Typography>
-                                        </IconButton>
-                                        <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvoteFromIndividual(props.match.params.postId)} aria-label="remove from favorites" style={{ color: `${props?.postIndividual?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
-                                            <ThumbDownAltIcon />
-                                            <Typography className={classes.down_votes_count} variant="h6" component="h6">
-                                                {props?.postIndividual?.downvotes?.length}
-                                            </Typography>
-                                        </IconButton>
-                                    </div>
-                                )
+                                <div className="up__vote">
+                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleUpvoteFromIndividual(props.match.params.postId)} aria-label="add to favorites">
+                                        <ThumbUpAltIcon />
+                                        <Typography className={classes.up_votes_count} variant="h6" component="h6">
+                                            {props?.postIndividual?.upvotes?.length}
+                                        </Typography>
+                                    </IconButton>
+                                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => handleDownvoteFromIndividual(props.match.params.postId)} aria-label="remove from favorites" style={{ color: `${props?.postIndividual?.downvotes?.includes(props?.auth?.user?.userId) ? "#0eaa49" : ""}` }}>
+                                        <ThumbDownAltIcon />
+                                        <Typography className={classes.down_votes_count} variant="h6" component="h6">
+                                            {props?.postIndividual?.downvotes?.length}
+                                        </Typography>
+                                    </IconButton>
+                                </div>
+                            )
                         }
                         <IconButton
                             disableFocusRipple={true} disableRipple={true}
@@ -359,10 +369,10 @@ function PostIndividual(props) {
                                                                 <DeleteIcon />
                                                             </IconButton>
                                                         ) : (
-                                                                <IconButton disableFocusRipple={true} disableRipple={true} className="post_delete" disabled onClick={() => handleDeleteComment(comment._id)} color="default" aria-label="delete">
-                                                                    <DeleteIcon />
-                                                                </IconButton>
-                                                            )
+                                                            <IconButton disableFocusRipple={true} disableRipple={true} className="post_delete" disabled onClick={() => handleDeleteComment(comment._id)} color="default" aria-label="delete">
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        )
                                                     }
                                                 </Box>
                                             )

@@ -3,26 +3,56 @@ const initialState = {
     myposts: [],
     resourceBox: [],
     // socialHandles: [],
-    privateJoinGroups: []
+    privateJoinGroups: [],
+    isLoading: false,
+    hasMore: false
 }
 
 const profilereducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'FETCHER':
+            return {
+                ...state,
+                isLoading: true
+            }
+        case 'HAS_MORE':
+            return {
+                ...state,
+                hasMore: action.hasMore,
+            }
+
         case 'PROFILE_MYPOSTS':
             return {
                 ...state,
-                myposts: action.payload
+                myposts: state.myposts.concat(action.payload),
+                isLoading: false,
+                hasMore: action.hasMore,
             }
+        case 'CLEAR_PROFILE_MYPOSTS':
+            return {
+                ...state,
+                myposts: [],
+            }
+
         case 'PROFILE_DELETE_MYPOST':
             return {
                 ...state,
                 myposts: state.myposts.filter(mypost => mypost._id !== action.payload)
             }
+
         case 'PROFILE_RESOURCEBOX':
             return {
                 ...state,
-                resourceBox: action.payload
+                resourceBox: state.resourceBox.concat(action.payload),
+                isLoading: false,
+                hasMore: action.hasMore,
             }
+        case 'CLEAR_PROFILE_RESOURCEBOX':
+            return {
+                ...state,
+                resourceBox: [],
+            }
+
         case 'PROFILE_DETAILS':
             return {
                 ...state,

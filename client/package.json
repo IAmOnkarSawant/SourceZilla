@@ -24,6 +24,7 @@
     "react-flip-move": "^3.0.4",
     "react-images": "^1.1.7",
     "react-loading": "^2.0.3",
+    "react-loadingg": "^1.7.2",
     "react-modal-image": "^2.5.0",
     "react-player": "^2.6.2",
     "react-redux": "^7.2.2",
@@ -35,10 +36,12 @@
     "react-thunk": "^1.0.0",
     "react-toastify": "^6.0.9",
     "react-toggle-component": "^3.0.8",
+    "react-waypoint": "^9.0.3",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "video-react": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -61,5 +64,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:4000"
 }

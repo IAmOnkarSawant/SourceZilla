@@ -27,7 +27,7 @@ router.get('/details', authenticate, async (req, res, next) => {
     if (user.profileImage) {
         let file = await getFileDetails(next, user.profileImage);
 
-        userDetails = { 
+        userDetails = {
             "role": user.role,
             "myPosts": user.myPosts,
             "resourceBox": user.resourceBox,
@@ -59,12 +59,24 @@ router.get('/details', authenticate, async (req, res, next) => {
 
 });
 
-router.get('/myposts', authenticate, async (req, res, next) => {
+router.get('/myposts/:page', authenticate, async (req, res, next) => {
     const userId = req.user.userId;
+
+    const page = req.params.page;
+    const limit = 3;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
     let user, updatedPosts, userPost;
     try {
-        user = await User.findById(userId).populate('myPosts').exec();
+        user = await User.findById(userId).populate({
+            path: 'myPosts',
+            options: {
+                sort: { _id: -1 },
+                skip: startIndex,
+                limit: limit
+            }
+        }).exec();
     } catch (err) {
         const error = new HttpError('Could Not find your posts', 500);
         return next(error);
@@ -115,12 +127,24 @@ router.get('/myposts', authenticate, async (req, res, next) => {
 
 });
 
-router.get('/resourcebox', authenticate, async (req, res, next) => {
+router.get('/resourcebox/:page', authenticate, async (req, res, next) => {
     const userId = req.user.userId;
+
+    const page = req.params.page;
+    const limit = 3;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
     let user, updatedPosts, userPost;
     try {
-        user = await User.findById(userId).populate('resourceBox').exec();
+        user = await User.findById(userId).populate({
+            path: 'resourceBox',
+            options: {
+                sort: { _id: -1 },
+                skip: startIndex,
+                limit: limit
+            }
+        }).exec();
     } catch (err) {
         const error = new HttpError('Could Not find your resource box posts', 500);
         return next(error);

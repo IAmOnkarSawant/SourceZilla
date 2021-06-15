@@ -74,22 +74,21 @@ export const createprivateGroup = (groupName) => {
     }
 }
 
-export const getprivateGroupPostsById = (privateGroupId) => {            //
+export const getprivateGroupPostsById = (privateGroupId, page) => {            //
     return (dispatch) => {
         dispatch({
-            type: 'LOADING',
-            payload: true
+            type: 'FETCHER',
         })
-        Axios.get(`/privategroup/view/${privateGroupId}/`)
+        Axios.get(`/privategroup/view/${privateGroupId}/${page}`)
             .then(({ data }) => {
                 dispatch({
                     type: 'GET_PRIVATE_POSTS_BY_GROUP_ID',
-                    payload: data.groupsPosts.reverse(),
+                    payload: data.groupsPosts,
                     groupAdmin: data.groupAdmin
                 })
                 dispatch({
-                    type: 'LOADING',
-                    payload: false
+                    type: 'HAS_MORE',
+                    hasMore: data.groupsPosts.length > 0
                 })
                 console.log(data.groupAdmin)
                 console.log(data)

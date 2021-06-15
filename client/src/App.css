@@ -29,7 +29,6 @@ body::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-
 body::-webkit-scrollbar-thumb {
   border-radius: 60px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
@@ -163,9 +162,9 @@ body::-webkit-scrollbar-thumb {
   margin-top: 2vh;
 }
 
-.MuiIconButton-root:hover {
+/* .MuiIconButton-root:hover {
   background-color: transparent !important;
-}
+} */
 
 .utilsa {
   color: #059644 !important;
@@ -178,7 +177,7 @@ body::-webkit-scrollbar-thumb {
   background-color: #afee88;
 }
 
-.utilsa_comment{
-  color:  #059644;
+.utilsa_comment {
+  color: #059644;
   font-weight: 600;
 }

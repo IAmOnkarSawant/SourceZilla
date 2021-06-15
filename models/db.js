@@ -7,7 +7,7 @@ const Grid = require('gridfs-stream');
 const HttpError = require('./http-error');
 require('dotenv').config({ path: __dirname + './../.env' });
 
-let URL = process.env.NODE_ENV === 'production' ? process.env.DB_URL : process.env.DB_URL_LOCAL
+let URL = process.env.NODE_ENV === 'production' ? process.env.DB_URL : process.env.DB_URL
 
 mongoose.connect(URL, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, useCreateIndex: true }, (err) => {
   if (!err) {
@@ -83,9 +83,61 @@ function retrieveFile(res, next, filename) {
 
 }
 
+function retrieveVideoFile(res,req, next, fileName) {
+
+  gfs.files.findOne({
+    filename: fileName
+  }, function (err, file) {
+    if (err) {
+      return res.status(400).send({
+        err: 'Some error is there'
+      });
+    }
+    if (!file) {
+      return res.status(404).send({
+        err: 'No file Found'
+      });
+    }
+    console.log(file)
+    if (req.headers['range']) {
+      var parts = req.headers['range'].replace(/bytes=/, "").split("-");
+      console.log(parts)
+      var partialstart = parts[0];
+      var partialend = parts[1];
+
+      var start = parseInt(partialstart, 10);
+      var end = partialend ? parseInt(partialend, 10) : file.length - 1;
+      var chunksize = (end - start) + 1;
+
+      res.writeHead(206, {
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Range': 'bytes ' + start + '-' + end + '/' + file.length,
+        'Content-Type': file.contentType
+      });
+
+      gfs.createReadStream({
+        _id: file._id,
+        range: {
+          startPos: start,
+          endPos: end
+        }
+      }).pipe(res);
+    } else {
+      res.header('Content-Length', file.length);
+      res.header('Content-Type', file.contentType);
+
+      gfs.createReadStream({
+        _id: file._id
+      }).pipe(res);
+    }
+  });
+
+}
+
 require('./userSchema');
 require('./postSchema');
 require('./categorySchema');
 require('./privateGroupSchema');
 
-module.exports = { gfs, upload, deleteFile, getFileDetails, retrieveFile };
+module.exports = { gfs, upload, deleteFile, getFileDetails, retrieveFile, retrieveVideoFile };

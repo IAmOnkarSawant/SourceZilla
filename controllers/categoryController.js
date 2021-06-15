@@ -18,7 +18,8 @@ router.get('/', async (req, res, next) => {
 
     let categories;
     try {
-        categories = await Categories.find().sort({ _id: -1 }).exec();
+        categories = await Categories.find().sort({ _id: -1 }).exec()
+
     } catch (err) {
         const error = new HttpError('Unable to fetch all categories', 500);
         return next(error);
@@ -76,27 +77,54 @@ router.get('/popular', async (req, res, next) => {
     res.status(200).json({ categories: categories });
 });
 
-router.get('/followedCategories', authenticate, async (req, res, next) => {
+// Edited
+router.get('/followedCategories/:page', authenticate, async (req, res, next) => {
+    const page = parseInt(req.params.page, 10)
+    const limit = 4
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    // const endIndex = page * limit;
 
     let followedCategories;
+    let CountFollowedCategories;
     try {
-        followedCategories = await Categories.find({ 'followers': mongoose.Types.ObjectId(req.user.userId) }).sort({ _id: -1 });
+        followedCategories = await Categories.find({ 'followers': mongoose.Types.ObjectId(req.user.userId) })
+            .sort({ _id: 'asc' })
+            .limit(limit)
+            .skip(startIndex)
+            .exec()
+
+        CountFollowedCategories = await Categories.find({ 'followers': mongoose.Types.ObjectId(req.user.userId) })
+            .countDocuments()
+            .exec()
     } catch (err) {
         const error = new HttpError('Unable to process your request', 500);
         return next(error);
     }
 
-    res.status(200).json({ categories: followedCategories });
+    res.status(200).json({ categories: followedCategories, CountFollowedCategories });
 });
 
 // GET Route @ category/:id
 // Returns one category with all its posts
-router.get('/getposts/:categoryId', async (req, res, next) => {
+router.get('/getposts/:categoryId/:page', async (req, res, next) => {
     const { categoryId } = req.params;
+
+    const page = parseInt(req.params.page, 10)
+    const limit = 2
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
     let category, updatedPosts, userPost;
     try {
-        category = await Categories.findById(categoryId).populate('posts').exec();
+        category = await Categories.findById(categoryId)
+            .populate({
+                path: 'posts',
+                options: {
+                    sort: { _id: -1 }
+                }
+            })
+            .exec()
     } catch (err) {
         const error = new HttpError('Could Not fetch the categories', 500);
         return next(error);
@@ -170,7 +198,7 @@ router.get('/getposts/:categoryId', async (req, res, next) => {
         "_id": category._id,
         "categoryName": category.categoryName,
         "followers": category.followers.length,
-        "posts": updatedPosts
+        "posts": updatedPosts.slice(startIndex, endIndex)
     }
 
     res.status(200).json({ category: outcategory });
@@ -282,10 +310,10 @@ router.post('/report', authenticate, async (req, res, next) => {
     res.status(200).json({ 'message': 'Category has been reported for inappropriate content.' })
 });
 
-router.patch('/follow', authenticate, async (req, res, next) => {
+router.patch('/follow/:categoryId', authenticate, async (req, res, next) => {
 
     const userId = req.user.userId;
-    const { categoryId } = req.body;
+    const { categoryId } = req.params;
 
     console.log("Follow : ", categoryId)
     let user;
@@ -321,10 +349,11 @@ router.patch('/follow', authenticate, async (req, res, next) => {
 
 });
 
-router.patch('/unfollow', authenticate, async (req, res, next) => {
+router.patch('/unfollow/:categoryId', authenticate, async (req, res, next) => {
 
     const userId = req.user.userId;
-    const { categoryId } = req.body;
+    const { categoryId } = req.params;
+    console.log(categoryId)
 
     console.log("UnFollow : ", categoryId)
 

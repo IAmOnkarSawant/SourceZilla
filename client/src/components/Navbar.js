@@ -2,100 +2,75 @@ import React from 'react';
 import '../css/Navbar.css'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { NavLink, withRouter } from 'react-router-dom';
-import { Avatar } from '@material-ui/core';
+import { withRouter, Link } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 import bookLogo from '../Images/favicon.png'
 import { connect } from 'react-redux';
 import { logoutUser } from '../redux/actions/authActions'
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import AppBarCollapse from './NavComponents/AppBarCollapse';
+
+const useStyles = makeStyles((theme) => ({
+    appBar: {
+        backgroundColor: "#39424E"
+    },
+    title: {
+        fontSize: 24,
+    },
+    left: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    toolbar: {
+        justifyContent: 'space-between',
+    },
+    navbarBrandContent: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    navbarBrandName: {
+        fontSize: 24,
+        fontWeight: '700',
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: theme.spacing(2)
+    }
+}))
 
 function Navbar(props) {
 
-    const onLogout = (e) => {
-        e.preventDefault()
-        props.logoutUser(props.history)
-    }
-
-    console.log(props.scrollClass)
-
-    const guestLinks = (
-        <div className="navbar__right">
-            <NavLink
-                activeClassName="navbar__link--active"
-                className="navbar__link"
-                to="/auth/login/"
-            >
-                Log In
-            </NavLink>
-            <NavLink
-                activeClassName="navbar__link--active"
-                className="navbar__link"
-                to="/auth/register/"
-            >
-                Sign Up
-            </NavLink>
-        </div>
-    )
-
-    const authLinks = (
-        <div className="navbar__right">
-            {
-                props.auth.user.role === 'Admin' ? (
-                    <NavLink
-                        activeClassName="navbar__link--active"
-                        className="navbar__link"
-                        to="/admin/"
-                    >
-                        Admin
-                    </NavLink>
-                ) : (
-                        null
-                    )
-            }
-            <NavLink
-                activeClassName="navbar__link--active"
-                className="navbar__link"
-                to="/categories/"
-            >
-                Categories
-            </NavLink>
-            <NavLink
-                activeClassName="navbar__link--active"
-                className="navbar__link"
-                to="/groups/"
-            >
-                Groups
-            </NavLink>
-            <NavLink
-                activeClassName="navbar__link--active"
-                className="navbar__link"
-                to="/profile/"
-            >
-                Profile
-            </NavLink>
-            <span className="logout__button" onClick={onLogout} >Logout</span>
-            <Avatar alt="" src={`/posts/file/${props.details.fileName}`} />
-        </div>
-    )
-
+    const classes = useStyles();
     return (
-        <div className="navbar">
-            <AppBar  className={`${props.scrollClass === true ? "scrollable_navbar" : "navbar__strip"}`}>
-                <Toolbar className="navbar__toolbar">
-                    <div className="navbar__left">
-                        <img className="navbar__logo" src={bookLogo} width="30px" height="30px" alt="" />
-                        <a href='/'  className="navbar__brand">
-                            Source<span style={{color :'#04A54C',fontWeight : '900',fontSize : '30px'}}>Zilla</span> 
-                        </a>
+        <>
+            <AppBar elevation={0} position="fixed" className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <div className={classes.left}>
+                        <div className={classes.navbarBrand}>
+                            <Link
+                                underline="none"
+                                color="inherit"
+                                className={classes.title}
+                                to="/explore/"
+                            >
+                                <div className={classes.navbarBrandContent}>
+                                    <img src={bookLogo} width="30px" height="30px" alt="" />
+                                    <Typography className={classes.navbarBrandName}>
+                                        <span style={{ color: 'white' }}>Source</span><span style={{ color: '#04A54C', fontWeight: '900', fontSize: '30px' }}>Zilla</span>
+                                    </Typography>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
-                    <div className="navbar__middle">
-                        {/* <SearchBar /> */}
+                    <div className={classes.right}>
+                        <AppBarCollapse />
                     </div>
-                    {
-                        props.auth.isAuthenticated ? authLinks : guestLinks
-                    }
                 </Toolbar>
             </AppBar>
-        </div>
+            <Toolbar />
+        </>
     )
 }
 

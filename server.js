@@ -19,6 +19,7 @@ const userController = require('./controllers/userController');
 const categoryController = require('./controllers/categoryController');
 const adminController = require('./controllers/adminController');
 const privateGroupController = require('./controllers/privateGroupController');
+const videoStreamingController = require('./controllers/videoStreamingController');
 const { deleteFile, upload } = require('./models/db');
 
 // Init
@@ -50,6 +51,7 @@ app.use('/posts', postController);
 app.use('/user', userController);
 app.use('/admin', adminController);
 app.use('/privategroup', privateGroupController);
+app.use('/streamer', videoStreamingController);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
@@ -79,7 +81,7 @@ app.use((error, req, res, next) => {
 })
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 // Server Listener
 app.listen(PORT, () => {
