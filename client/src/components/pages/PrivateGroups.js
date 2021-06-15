@@ -1,6 +1,6 @@
 import React from 'react'
-import '../../css/PrivateGroups.css'
-import '../../css/Categories.css'
+// import '../../css/PrivateGroups.css'
+// import '../../css/Categories.css'
 import Layout from '../Layout'
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -8,7 +8,7 @@ import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { profileDetails } from '../../redux/actions/profileAction'
 import { getprivateGroups, createprivateGroup } from '../../redux/actions/privategroupAction'
-import { Avatar, Button, Container, Dialog, IconButton, Paper } from '@material-ui/core'
+import { Avatar, Button, Container, Dialog, IconButton, Paper, Grid, Card, CardContent, Typography, CardActions } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 // import NavigationIcon from '@material-ui/icons/Navigation';
 import store from '../../redux/store'
@@ -21,11 +21,52 @@ import Loader from '../Loader'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ScrollToTop from 'react-scroll-up'
 import { capitalizeFirstLetter } from '../../utils/utils'
+import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
+import FlagIcon from '@material-ui/icons/Flag';
+import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 
 const useStyles = makeStyles((theme) => ({
     extendedIcon: {
         marginRight: theme.spacing(0),
     },
+    card: {
+        borderRadius: '20px',
+        boxShadow: '0 2px 4px rgb(24 4 50 / 24%)',
+        '&:hover': {
+            boxShadow: '0 4px 6px rgb(24 4 50 / 24%)'
+        },
+    },
+    cardIcons: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    cardInfo: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: "center",
+        justifyContent: "center",
+        paddingTop: theme.spacing(3),
+        paddingBottom: theme.spacing(3),
+    },
+    cardData: {
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    JoinButton: {
+        background: 'linear-gradient( to right, rgb(4, 167, 77) 0%, #04795d 0%, #1db853 )',
+        border: 0,
+        borderRadius: 20,
+        color: 'white',
+        margin: theme.spacing(1)
+    },
+    JoinButtonDisabled: {
+        border: 0,
+        borderRadius: 20,
+        color: 'white',
+        margin: theme.spacing(1)
+    }
 }));
 
 function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, details, groups, auth, loading, passcode }) {
@@ -92,7 +133,7 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                         </form>
                     </div>
                 </Paper>
-                <div className="categories">
+                { /* <div className="categories">
                     <div className="grid__container_for_categories">
                         {
                             groups.map((group, index) => {
@@ -123,17 +164,17 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                                     </Link>
                                                 </Button>
                                             ) : (
-                                                    <Button fullWidth style={{borderRadius : '30px'}} disabled size="small" variant="contained">
-                                                        <Link style={{ padding: '0px 60px', color: 'black' }}
-                                                            to={{
-                                                                pathname: `/modal/${group.groupName}/${group._id}/join/`,
-                                                                state: { modal: true }
-                                                            }}
-                                                        >
-                                                            Join
-                                                        </Link>
-                                                    </Button>
-                                                )
+                                                <Button fullWidth style={{ borderRadius: '30px' }} disabled size="small" variant="contained">
+                                                    <Link style={{ padding: '0px 60px', color: 'black' }}
+                                                        to={{
+                                                            pathname: `/modal/${group.groupName}/${group._id}/join/`,
+                                                            state: { modal: true }
+                                                        }}
+                                                    >
+                                                        Join
+                                                    </Link>
+                                                </Button>
+                                            )
                                             }
                                         </div>
                                     </div>
@@ -142,7 +183,71 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                             )
                         }
                     </div>
-                </div>
+                </div> */}
+                <Grid style={{ marginTop: '20px' }} justify="flex-start" container spacing={3}>
+                    {groups.map((group, index) => {
+                        return (
+                            <Grid key={index} item xs={12} sm={4} md={4} lg={3}>
+                                <Card className={classes.card} >
+                                    <CardContent>
+                                        <div className={classes.cardIcons}>
+                                            <IconButton component={Link} to={`/groups/${group.groupName}/${group._id}/`} >
+                                                <OpenInBrowserIcon style={{ color: '#19AD55' }} fontSize="medium" />
+                                            </IconButton>
+                                        </div>
+                                        <div className={classes.cardInfo}>
+                                            <Typography gutterBottom variant="h6" color="default">
+                                                {group.groupName}
+                                            </Typography>
+                                            <Typography color="textSecondary" gutterBottom variant="subtitle1">
+                                                {group.groupAdmin}
+                                            </Typography>
+                                            <div className={classes.cardData}>
+                                                <PeopleAltOutlinedIcon color="action" />
+                                                <Typography style={{ paddingLeft: '6px' }} color="default" >
+                                                    {group.groupMembers}
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                    <CardActions>
+                                        {!details?.myPrivateGroups?.includes(group._id) ? (
+                                            <Button
+                                                component={Link}
+                                                to={{
+                                                    pathname: `/modal/${group.groupName}/${group._id}/join/`,
+                                                    state: { modal: true }
+                                                }}
+                                                fullWidth
+                                                size="medium"
+                                                disableElevation
+                                                className={classes.JoinButton}
+                                                variant="contained">
+                                                Join
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                component={Link}
+                                                to={{
+                                                    pathname: `/modal/${group.groupName}/${group._id}/join/`,
+                                                    state: { modal: true }
+                                                }}
+                                                fullWidth
+                                                disableElevation
+                                                className={classes.JoinButtonDisabled}
+                                                disabled
+                                                size="medium"
+                                                variant="contained">
+                                                Join
+                                            </Button>
+                                        )
+                                        }
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        )
+                    })}
+                </Grid>
             </Container>
             <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
                 <div className="passcode_container">
@@ -154,10 +259,10 @@ function PrivateGroups({ profileDetails, getprivateGroups, createprivateGroup, d
                                     <FileCopyIcon style={{ color: '#0EAA49' }} />
                                 </button>
                             ) : (
-                                    <button className="passcode_copy" >
-                                        <FileCopyOutlinedIcon />
-                                    </button>
-                                )
+                                <button className="passcode_copy" >
+                                    <FileCopyOutlinedIcon />
+                                </button>
+                            )
                         }
                     </CopyToClipboard>
                 </div>

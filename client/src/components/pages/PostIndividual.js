@@ -233,14 +233,14 @@ function PostIndividual(props) {
                             />
                         )}
                         {ApplicationFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
-                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
+                            <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
                                 <Button className="link_button_file" variant="contained" size="small">
                                     View Document
                                 </Button>
                             </a>
                         )}
                         {TextFormat?.includes(props?.postIndividual?.fileContentType) && props?.postIndividual?.fileName && (
-                            <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
+                            <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${props?.postIndividual?.fileName}` : `/posts/file/${props?.postIndividual?.fileName}`} target="_blank" >
                                 <Button className="link_button_file" variant="contained" size="small">
                                     View Document
                                 </Button>

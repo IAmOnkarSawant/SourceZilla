@@ -66,6 +66,14 @@ const useStyles = makeStyles((theme) => ({
     input: {
         display: 'none',
     },
+    LeaveButton: {
+        background: 'linear-gradient( to right, rgb(4, 167, 77) 0%, #04795d 0%, #1db853 )',
+        border: 0,
+        borderRadius: 20,
+        color: 'white',
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(2)
+    }
 }));
 
 function PostsBycategory(props) {
@@ -163,13 +171,12 @@ function PostsBycategory(props) {
                     <p className="groupAdmin_name">Group Admin</p>
                 )}
                 <div className="imp_private-info">
-                    <Fab className={classes.leave_button + ' leave_group_icon'} size="medium" color="secondary" variant="extended" onClick={() => handleLeaveGroup(props.match.params.groupId)}>
-                        <ExitToAppIcon className={classes.extendedIcon} />
-                        <span style={{ marginLeft: '10px' }} >Leave Group</span>
-                    </Fab>
-                    <p>
+                    <Button startIcon={<ExitToAppIcon />} disableElevation className={classes.LeaveButton} onClick={() => handleLeaveGroup(props.match.params.groupId)} size="medium" variant="contained" color="default"  >
+                        Leave
+                    </Button>
+                    <Typography gutterBottom variant="h4" color="default">
                         {capitalizeFirstLetter(props.match.params.groupName)}
-                    </p>
+                    </Typography>
                     <div htmlFor="toggle-1">
                         <Toggle
                             name="toggle-1"
@@ -284,7 +291,7 @@ function PostsBycategory(props) {
                                         />
                                         <CardContent>
                                             <Typography style={{ marginBottom: '20px' }} variant="body2" color="textSecondary" component="p">
-                                                <pre dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
+                                                <pre style={{ textDecoration: 'none' }} dangerouslySetInnerHTML={{ __html: replaceURLWithHTMLLinks(post.postContent.replace(/<br\s*\/?>/gi, ' ')) }} />
                                             </Typography>
                                             {ImageFormat?.includes(post?.fileContentType) && post?.fileName && (
                                                 <img
@@ -295,14 +302,14 @@ function PostsBycategory(props) {
                                                 />
                                             )}
                                             {ApplicationFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
+                                                <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
                                                     <Button className="link_button_file" variant="contained" size="small">
                                                         View Document
                                                     </Button>
                                                 </a>
                                             )}
                                             {TextFormat?.includes(post?.fileContentType) && post?.fileName && (
-                                                <a className="link_button" style={{ color: 'black' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
+                                                <a className="link_button" style={{ color: 'black', textDecoration: 'none' }} rel="noopener noreferrer" href={process.env.NODE_ENV === 'development' ? `http://localhost:4000/posts/file/${post.fileName}` : `/posts/file/${post.fileName}`} target="_blank" >
                                                     <Button className="link_button_file" variant="contained" size="small">
                                                         View Document
                                                     </Button>
