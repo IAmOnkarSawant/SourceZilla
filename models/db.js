@@ -139,5 +139,7 @@ require('./userSchema');
 require('./postSchema');
 require('./categorySchema');
 require('./privateGroupSchema');
+require('./interviewExperienceSchema')
+require('./companySchema')
 
 module.exports = { gfs, upload, deleteFile, getFileDetails, retrieveFile, retrieveVideoFile };

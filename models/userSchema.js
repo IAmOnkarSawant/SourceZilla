@@ -28,9 +28,11 @@ const userSchema = new Schema({
         default: 'User'
     },
     myPosts: [{ type: mongoose.Types.ObjectId, ref: 'Post' }],
+    myInterviewExperience: [{type: mongoose.Types.ObjectId, ref: 'Experiences'}],
     resourceBox: [{ type: mongoose.Types.ObjectId, ref: 'Post' }],
     categoriesFollowed: [{ type: mongoose.Types.ObjectId, ref: 'Categories' }],
     myPrivateGroups: [{ type: mongoose.Types.ObjectId, ref: 'PrivateGroup' }],
+
 
     socialHandles: {
         github: { type: String },

@@ -18,7 +18,10 @@ const userController = require('./controllers/userController');
 const categoryController = require('./controllers/categoryController');
 const adminController = require('./controllers/adminController');
 const privateGroupController = require('./controllers/privateGroupController');
+const interviewCornerController = require('./controllers/interviewCornerController'); 
+const interviewExperienceController = require('./controllers/interviewExperienceController');
 const videoStreamingController = require('./controllers/videoStreamingController');
+
 const { deleteFile, upload } = require('./models/db');
 
 // Init
@@ -55,10 +58,11 @@ app.use('/user', userController);
 app.use('/admin', adminController);
 app.use('/privategroup', privateGroupController);
 app.use('/streamer', videoStreamingController);
+app.use('/interviewCorner', interviewCornerController);
+app.use('/experience', interviewExperienceController);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
-
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
     });
